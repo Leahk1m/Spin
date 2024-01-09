@@ -11,6 +11,7 @@
 
    <body> 
     <script type="text/javascript">
+        var discountsArray = [];
       var apiUrl = 'https://callbacks.dev.sakari.io/spintowin/13';
     
       fetch(apiUrl).then(res => {
@@ -22,27 +23,27 @@
       });
     
       function createSpans(discounts) {
-        const box1 = document.querySelector('.box1');
-        const box2 = document.querySelector('.box2');
-    
-        discounts.forEach((discount, index) => {
-          const span = document.createElement('span');
-          span.innerHTML = `<b>${discount}</b>`;
-          span.classList.add(`span${index + 1}`);
-          
-          if (index < 4) {
-            box1.appendChild(span);
-          } else {
-            box2.appendChild(span);
-          }
+     const box1 = document.querySelector('.box1');
+     const box2 = document.querySelector('.box2');
 
-          console.log('box1', box1)
-          console.log('box2', box2)
-        });
-      }
+    discounts.forEach((discount, index) => {
+    discountsArray.push(discount);
+    const span = document.createElement('span');
+    span.innerHTML = `<b>${discount}</b>`;
 
 
-    
+    let spanClassIndex = (index % 4) + 1;
+    span.classList.add(`span${spanClassIndex}`);
+
+
+    if (index < 4) {
+      box1.appendChild(span);
+    } else {
+      box2.appendChild(span);
+    }
+  });
+}
+
     </script>
     
   <div class="content-container">
@@ -53,7 +54,7 @@
       
         </div>
         <div class="box2">
-        
+       
         </div>
       </div> 
       <button class="spin"></button>
@@ -62,9 +63,9 @@
      <h2>Spin To Win!</h2>
      <p>Enter your info for the chance to win</p>
      <form id="spin-to-win-form">
-       <input type="text" class="textfield" placeholder="First Name" required>
-       <input type="text" class="textfield" placeholder="Last Name" required>
-       <input type="email" class="textfield" placeholder="Email" required>
+       <input type="text" class="textfield" name="firstName" placeholder="First Name" required>
+       <input type="text" class="textfield" name="lastName" placeholder="Last Name" required>
+       <input type="email" class="textfield" name="email" placeholder="Email" required>
        <button type="submit" class="spinButton"onclick="handleRotate()">Try your luck</button>
      </form>
    </div>

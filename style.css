@@ -47,7 +47,7 @@ body{
   border-radius: 50%;
   border: 10px solid #E5F7FF;
   overflow: hidden;
-  transition: all ease 5s;
+  transition: all ease 5s; 
   right: 50%;
 }
 
