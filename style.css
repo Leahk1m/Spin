@@ -8,14 +8,21 @@
 }
 
 body{
-  font-family: "Open Sans";
-  /* display: flex; */
-  justify-content: center;
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
   height: 100vh;
   overflow: hidden;
   background-size: cover;
 }
+
+.content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+}
+
 
 .mainbox{
   position: relative;
@@ -27,7 +34,6 @@ body{
   content: '';
   width: 32px;
   height: 32px;
-  background: url('arrow-left.png') no-repeat;
   background-size: 32px;
   right: -30px;
   top: 50%;
@@ -39,11 +45,12 @@ body{
   position: relative;
   font-weight: bold;
   border-radius: 50%;
-  border: 10px solid #fff;
+  border: 10px solid #E5F7FF;
   overflow: hidden;
   transition: all ease 5s;
   right: 50%;
 }
+
 
 span{
   width: 50%;
@@ -115,7 +122,6 @@ span b{
   height: 75px;
   border-radius: 50%;
   border: 4px solid #fff;
-  /* background-color: #001aff; */
   color: #fff;
   box-shadow: 0 5px 20px #000;
   font-weight: bold;
@@ -137,13 +143,60 @@ span b{
   }
 }
 
-.fa-location-arrow {
-  position: absolute; /* Position absolutely within the mainbox */
-  top: 50%; /* Start at the vertical center of the wheel */
-  left: 50%; /* Place it just outside the right edge of the wheel */
-  transform: rotate(223deg);
+.fa-location-dot {
+  position: absolute;
+  top: 22%;
+  left: 40%;
+  transform: rotate(54deg);
   z-index: 99;
+  font-size: 2.2rem;
+}
 
-  font-size: 2em; /* Adjust size as needed */
-  /* You may need to adjust the rotation and translation values based on your layout */
+
+#user-form {
+  font-family: 'Arial', sans-serif; 
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  margin: auto;
+  width: fit-content;
+}
+
+#user-form h2 {
+  color: #000; 
+  margin-bottom: 15px;
+}
+
+#user-form p {
+  color: #333; 
+  margin-bottom: 20px;
+}
+
+.textfield {
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd; 
+  border-radius: 4px;
+  display: block; 
+  width: 250px; 
+  box-sizing: border-box; 
+}
+
+.spinButton {
+  background-color:  #55BBEB;
+  color: #fff; 
+  padding: 15px 30px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+.spinButton:hover {
+  background-color: #1871ED;
+
+
 }

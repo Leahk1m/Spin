@@ -1,16 +1,3 @@
-// document.getElementById('spinButton').addEventListener('click', function() {
-//   var wheel = document.getElementById('wheel');
-//   var deg = Math.floor(5000 + Math.random() * 5000); 
-
-//   wheel.style.transition = 'transform 5s ease-out';
-//   wheel.style.transform = `rotate(${deg}deg)`;
-
-//   setTimeout(function() {
-//       wheel.style.transition = 'none';
-//       wheel.style.transform = `rotate(${deg % 360}deg)`;
-//   }, 5000); 
-// });
-
 function handleRotate(){
   var min = 1024;
   var max = 9999;
@@ -23,5 +10,12 @@ function handleRotate(){
   setTimeout(function(){
     element.classList.add('animate');
   }, 5000);
-
 }
+
+document.getElementById('spin-to-win-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  handleRotate();
+});
+
+

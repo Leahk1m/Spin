@@ -10,25 +10,66 @@
   crossorigin="anonymous" referrerpolicy="no-referrer" />   </head>
 
    <body> 
-   <div id="mainbox" class="mainbox">
-     <i class="fa-solid fa-location-arrow"></i>
-     <div id="box" class="box">
-       <div class="box1">
-         <span class="span1"><b>10% Off</b></span>
-         <span class="span2"><b>50% Off</b></span>
-         <span class="span3"><b>Founders' Phone Numbers</b></span>
-         <span class="span4"><b>Virtual High Five</b></span>
-       </div>
-       <div class="box2">
-         <span class="span1"><b>75% Off</b></span>
-         <span class="span2"><b>20% Off</b></span>
-         <span class="span3"><b>Nothing </b></span>
-         <span class="span4"><b>Better Luck Next Time!</b></span>
-       </div>
-     </div> 
-     <button onclick="handleRotate()">Spin Meeee</button>
-     <button class="spin"></button>
+    <script type="text/javascript">
+      var apiUrl = 'https://callbacks.dev.sakari.io/spintowin/13';
+    
+      fetch(apiUrl).then(res => {
+        return res.json();
+      }).then(data => {
+        createSpans(data.data);
+      }).catch(err => {
+        console.log('error:', err);
+      });
+    
+      function createSpans(discounts) {
+        const box1 = document.querySelector('.box1');
+        const box2 = document.querySelector('.box2');
+    
+        discounts.forEach((discount, index) => {
+          const span = document.createElement('span');
+          span.innerHTML = `<b>${discount}</b>`;
+          span.classList.add(`span${index + 1}`);
+          
+          if (index < 4) {
+            box1.appendChild(span);
+          } else {
+            box2.appendChild(span);
+          }
+
+          console.log('box1', box1)
+          console.log('box2', box2)
+        });
+      }
+
+
+    
+    </script>
+    
+  <div class="content-container">
+    <div id="mainbox" class="mainbox">
+      <i class="fa-solid fa-location-dot"></i>
+      <div id="box" class="box">
+        <div class="box1">
+      
+        </div>
+        <div class="box2">
+        
+        </div>
+      </div> 
+      <button class="spin"></button>
+    </div>
+    <div id="user-form">
+     <h2>Spin To Win!</h2>
+     <p>Enter your info for the chance to win</p>
+     <form id="spin-to-win-form">
+       <input type="text" class="textfield" placeholder="First Name" required>
+       <input type="text" class="textfield" placeholder="Last Name" required>
+       <input type="email" class="textfield" placeholder="Email" required>
+       <button type="submit" class="spinButton"onclick="handleRotate()">Try your luck</button>
+     </form>
    </div>
+
+  </div>
    <script src="script.js"></script>
    </body>
  </html>
