@@ -1,76 +1,90 @@
 
- <!DOCTYPE html>
- <html>
-   <head>
-     <title>Leah's Spin to Win Wheel</title>
-     <link href="style.css" rel="stylesheet" type="text/css" />
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>Leah's Spin to Win Wheel</title>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <link href="style.css" rel="stylesheet" type="text/css" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+      <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    </head>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
-  integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />   </head>
-
-   <body> 
-    <script type="text/javascript">
+    <body> 
+      <script type="text/javascript">
         var discountsArray = [];
-      var apiUrl = 'https://callbacks.dev.sakari.io/spintowin/13';
-    
-      fetch(apiUrl).then(res => {
-        return res.json();
-      }).then(data => {
-        createSpans(data.data);
-      }).catch(err => {
-        console.log('error:', err);
-      });
-    
-      function createSpans(discounts) {
-     const box1 = document.querySelector('.box1');
-     const box2 = document.querySelector('.box2');
-
-    discounts.forEach((discount, index) => {
-    discountsArray.push(discount);
-    const span = document.createElement('span');
-    span.innerHTML = `<b>${discount}</b>`;
-
-
-    let spanClassIndex = (index % 4) + 1;
-    span.classList.add(`span${spanClassIndex}`);
-
-
-    if (index < 4) {
-      box1.appendChild(span);
-    } else {
-      box2.appendChild(span);
-    }
-  });
-}
-
-    </script>
-    
-  <div class="content-container">
-    <div id="mainbox" class="mainbox">
-      <i class="fa-solid fa-location-dot"></i>
-      <div id="box" class="box">
-        <div class="box1">
+  
+        fetch('https://callbacks.dev.sakari.io/spintowin/13').then(res => {
+          return res.json();
+        }).then(data => {
+          createSpans(data.data);
+        }).catch(err => {
+          console.log('error:', err);
+        });
       
-        </div>
-        <div class="box2">
-       
-        </div>
-      </div> 
-      <button class="spin"></button>
-    </div>
-    <div id="user-form">
-     <h2>Spin To Win!</h2>
-     <p>Enter your info for the chance to win</p>
-     <form id="spin-to-win-form">
-       <input type="text" class="textfield" name="firstName" placeholder="First Name" required>
-       <input type="text" class="textfield" name="lastName" placeholder="Last Name" required>
-       <input type="email" class="textfield" name="email" placeholder="Email" required>
-       <button type="submit" class="spinButton"onclick="handleRotate()">Try your luck</button>
-     </form>
-   </div>
+      function createSpans(discounts) {
+        const box1 = document.querySelector('.box1');
+        const box2 = document.querySelector('.box2');
 
+        discounts.forEach((discount, index) => {
+        discountsArray.push(discount);
+        const span = document.createElement('span');
+        span.innerHTML = `<b>${discount}</b>`;
+
+        let spanClassIndex = (index % 4) + 1;
+        span.classList.add(`span${spanClassIndex}`);
+
+        if (index < 4) {
+          box1.appendChild(span);
+        } else {
+          box2.appendChild(span);
+        }
+    });
+  }
+    </script>
+    <div style="position: absolute; left: 50%; z-index: 9999" id="stats-container">
+      <button id="statsButton" class="spinButton">Show Stats</button>
+      <h4 id="conversations" style="display: none;">Conversations: </h4>
+      <h4 id="views" style="display: none;">Views: </h4>
+    </div>
+  
+  
+  <div class="dialog" id="dialog" >
+    <div class="background-container">
+      <div class="image-opacity-layer"></div>
+      <div class="content-container" >
+        <div id="mainbox" class="mainbox">
+          <i class="fa-solid fa-location-dot"></i>
+          <div id="box" class="box">
+            <div class="box1">
+            </div>
+            <div class="box2">
+            </div>
+          </div> 
+          <button class="wheel-center" style="cursor: default"></button>
+        </div>
+        <div id="user-form">
+          
+          <h1 id="congratsMessage" style="display: none;">Congratulations!</h1>
+          <div id="confettiWrapper" style="position: absolute; z-index: 999999999; top: 0; left: 0; right: 0; bottom: 0; display: none;"></div>
+          
+          <form id="spin-to-win-form">
+            <h2>Spin To Win!</h2>
+            <p>Enter your info for the chance to win</p>
+            <input type="text" class="textfield" name="firstName" id="firstName" placeholder="First Name" required>
+            <input type="text" class="textfield" name="lastName" id="lastName" placeholder="Last Name" required>
+            <input type="email" class="textfield" name="email" id="email" placeholder="Email" required>
+            <button type="submit" class="spinButton" id="submitButton" onclick="handleRotate()" disabled>Try your luck</button>
+          </form>
+          </div>
+        </div>
+    </div>
   </div>
-   <script src="script.js"></script>
-   </body>
- </html>
+
+
+    <script src="script.js"></script>
+  </body>
+</html>

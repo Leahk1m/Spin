@@ -1,5 +1,4 @@
 
-
  *{
   box-sizing: border-box;
   padding: 0;
@@ -14,14 +13,41 @@ body{
   height: 100vh;
   overflow: hidden;
   background-size: cover;
+  /* background-image: url('https://framerusercontent.com/images/rremRFegwTx3kjT7QzG7ZeHQeMY.jpg') */
+}
+
+.background-container {
+  position: relative;
+}
+
+.image-opacity-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-image: url('https://static.vecteezy.com/system/resources/previews/010/566/478/original/colorful-donuts-sprinkled-with-sugar-seamless-pattern-gift-wrap-wallpaper-background-kawaii-doodle-flat-cartoon-illustration-vector.jpg'); */
+  /* background-image: url('https://snowboardmag.com/wp-content/uploads/2016/09/those-days-jussi-oksanen-dean-blotto-gray-snowboarding-for-slider-1400x900.jpg'); */
+  /* background-image: url('https://assets.wsimgs.com/wsimgs/rk/images/dp/wcm/202340/0026/open-kitchen-by-williams-sonoma-lemon-press-o.jpg'); */
+  /* background-image: url('https://blog.williams-sonoma.com/wp-content/uploads/2020/03/zoom-blog-icecreamsand-feature-march-20.jpg'); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.7; 
 }
 
 .content-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f0f0f0;
+  padding-right: 150px;
+  position: relative;
+  z-index: 2; 
+  background-repeat: repeat; 
+  background-size: cover;
+  background-position: center; 
 }
+
 
 
 .mainbox{
@@ -60,25 +86,25 @@ span{
 }
 .span1{
   clip-path: polygon(0 92%, 100% 50%, 0 8%);
-  background-color: #E5F7FF;
+  background-color: #A1E2E6;
   top: 120px;
   left: 0;
 }
 .span2{
   clip-path: polygon(100% 92%, 0 50%, 100% 8%);
-  background-color: #55BBEB;
+  background-color: #6C78F0;
   top: 120px;
   right: 0;
 }
 .span3{
   clip-path: polygon(50% 0%, 8% 100%, 92% 100%);
-  background-color: #A0D8F2;
+  background-color: #FF91C9;
   bottom: 0;
   left: 120px;
 }
 .span4{
   clip-path: polygon(50% 100%, 92% 0, 8% 0);
-  background-color:  #1871ED;
+  background-color:  #FBEE85;
   top: 0;
   left: 120px;
 }
@@ -88,32 +114,31 @@ span{
 }
 .box1 .span1 b,
 .box2 .span1 b{
- transform: translate(-50%, -50%) rotate(185deg);
+  transform: translate(-50%, -50%) rotate(185deg);
 }
 .box2 .span3 b{
- transform: translate(-50%, -50%) rotate(90deg);
+  transform: translate(-50%, -50%) rotate(90deg);
 }
 .box1 .span4 b,
 .box2 .span4 b{
- transform: translate(-50%, -50%) rotate(-85deg);
+  transform: translate(-50%, -50%) rotate(-85deg);
 }
 
 span b{
- font-size: 1rem;
- position: absolute;
- top: 50%;
- left: 50%;
- transform: translate(-50%, -50%);
-
+  font-size: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .box2{
- width: 100%;
- height: 100%;
- transform: rotate(-135deg);
+  width: 100%;
+  height: 100%;
+  transform: rotate(-135deg);
 }
 
-.spin{
+.wheel-center{
   position: absolute;
   top: 50%;
   right: 85%;
@@ -160,6 +185,8 @@ span b{
   border-radius: 8px;
   margin: auto;
   width: fit-content;
+  position: absolute;
+  left: 50%;
 }
 
 #user-form h2 {
@@ -193,10 +220,29 @@ span b{
   font-size: 16px;
   cursor: pointer; 
   transition: background-color 0.3s ease; 
+  padding: 10px;
+  width: 100%;
 }
 
 .spinButton:hover {
   background-color: #1871ED;
-
-
 }
+
+.spinButton:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
+
+.ui-dialog {
+  background-color: #f9f9f9; 
+  border: 1px solid #aaa; 
+  left: 0 !important;
+}
+.ui-dialog-titlebar {
+  display: none;
+}
+.ui-dialog-content {
+  padding: 0px !important;
+  overflow: visible !important;
+}
+
