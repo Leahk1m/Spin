@@ -45,14 +45,19 @@
     });
   }
     </script>
+      <div id="backdrop"></div>
+
     <div style="position: absolute; left: 50%; z-index: 9999" id="stats-container">
       <button id="statsButton" class="spinButton">Show Stats</button>
-      <h4 id="conversations" style="display: none;">Conversations: </h4>
+
+    <button id="openModalButton" class="spinButton">Open Modal</button>
+      <h4 id="conversions" style="display: none;">Conversions: </h4>
       <h4 id="views" style="display: none;">Views: </h4>
     </div>
   
-  
-  <div class="dialog" id="dialog" >
+  <div id="modal">
+    <i class="fa-solid fa-x" id="modal-close-x"style="width: 100%; display: flex; justify-content: flex-end; cursor: pointer;"></i>
+
     <div class="background-container">
       <div class="image-opacity-layer"></div>
       <div class="content-container" >
@@ -69,7 +74,7 @@
         <div id="user-form">
           
           <h1 id="congratsMessage" style="display: none;">Congratulations!</h1>
-          <div id="confettiWrapper" style="position: absolute; z-index: 999999999; top: 0; left: 0; right: 0; bottom: 0; display: none;"></div>
+          <div id="confettiWrapper" style="pointer-events: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; "></div>
           
           <form id="spin-to-win-form">
             <h2>Spin To Win!</h2>

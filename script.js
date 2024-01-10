@@ -17,12 +17,13 @@ function handleRotate(couponCode) {
     document.getElementById('spin-to-win-form').style.display = 'none';
     document.getElementById('congratsMessage').style.display = 'block'; 
     document.getElementById('confettiWrapper').style.display = 'block';
-    triggerConfetti();
+    renderConfetti();
 }, 5000); 
 }
 
-function triggerConfetti() {
+function renderConfetti() {
   var containerBounds = document.getElementById('confettiWrapper').getBoundingClientRect();
+
   
   confetti({
       particleCount: 100,
@@ -83,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 });
 
-
 $(document).ready(function() {
   $("#dialog").dialog({
       autoOpen: true, 
@@ -98,11 +98,12 @@ $(document).ready(function() {
 });
 
 document.getElementById('statsButton').addEventListener('click', function(event) {
-  const conversations = document.getElementById('conversations');
+  renderConfetti();
+  const conversions = document.getElementById('conversions');
   const views = document.getElementById('views');
 
-  if (conversations.style.display !== 'none' && views.style.display !== 'none') {
-    conversations.style.display = 'none';
+  if (conversions.style.display !== 'none' && views.style.display !== 'none') {
+    conversions.style.display = 'none';
     views.style.display = 'none';
     this.textContent = 'Show Stats'; 
   } else {
@@ -118,13 +119,50 @@ document.getElementById('statsButton').addEventListener('click', function(event)
 });
 
 function renderStats(data) {
-  const conversations = document.getElementById('conversations');
+  const conversions = document.getElementById('conversions'); 
   const views = document.getElementById('views');
+  
+  console.log('data', data)
 
-  conversations.innerHTML = `Conversations: ${data.conversations}`;
+  conversions.innerHTML = `Conversions: ${data.conversations}`; //this should change from conversations to conversions
   views.innerHTML = `Views: ${data.views}`;
 
-  conversations.style.display = 'block';
+  conversions.style.display = 'block';
   views.style.display = 'block';
   document.getElementById('statsButton').textContent = 'Hide Stats';
 }
+
+document.getElementById("openModalButton").addEventListener("click", () => {
+  if(modal.classList.contains("show")) {
+    handleModal('close');
+  } else {
+    handleModal('open');
+  }
+}); 
+
+const handleModal = (action) => {
+  const modal = document.getElementById("modal");
+  const backdrop = document.getElementById("backdrop");
+  const openModalButton = document.getElementById("openModalButton");
+
+  switch(action) {
+    case 'open':
+      modal.classList.add("show");
+      backdrop.classList.add("show");
+      openModalButton.textContent = 'Hide Modal';
+      break;
+    case 'close':
+      modal.classList.remove("show");
+      backdrop.classList.remove("show");
+      openModalButton.textContent = 'Show Modal';
+      break;
+    default:
+      break;
+  }
+};
+
+document.addEventListener("click", (event) => {
+  if (event.target.id === "backdrop" || event.target.id === "modal-close-x") {
+    handleModal('close');
+  }
+});
