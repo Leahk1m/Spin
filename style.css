@@ -18,6 +18,8 @@ body{
 
 .background-container {
   position: relative;
+  padding: 20px;
+
 }
 
 .image-opacity-layer {
@@ -30,10 +32,13 @@ body{
   /* background-image: url('https://snowboardmag.com/wp-content/uploads/2016/09/those-days-jussi-oksanen-dean-blotto-gray-snowboarding-for-slider-1400x900.jpg'); */
   /* background-image: url('https://assets.wsimgs.com/wsimgs/rk/images/dp/wcm/202340/0026/open-kitchen-by-williams-sonoma-lemon-press-o.jpg'); */
   /* background-image: url('https://blog.williams-sonoma.com/wp-content/uploads/2020/03/zoom-blog-icecreamsand-feature-march-20.jpg'); */
+  background-image: url('https://hips.hearstapps.com/hmg-prod/images/delish-profiteroles-05-1644593689.jpeg?crop=1xw:0.7874231032125769xh;center,top');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   opacity: 0.7; 
+
+  border-radius: 10px;
 }
 
 .content-container {
@@ -85,7 +90,7 @@ body{
   position: relative;
   font-weight: bold;
   border-radius: 50%;
-  border: 10px solid #E5F7FF;
+  border: 10px solid white;
   overflow: hidden;
   transition: all ease 5s; 
   right: 50%;
@@ -259,9 +264,9 @@ span b{
   position: absolute;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 30;
-  padding: 20px;
+  /* padding: 20px; */
   border-radius: 12px;
-  background-color: white;
+  /* background-color: white; */
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -270,3 +275,31 @@ span b{
   opacity: 1;
   pointer-events: auto;
 } 
+
+#x-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  font-size: 0.6rem;
+  cursor: pointer;
+  z-index: 5;
+  border: 1px solid white;
+  box-shadow: 0px 0px 3px 0px #ffffff21;
+  background-color: #949494;
+  color: white;
+  font-weight: 700;
+  -webkit-text-stroke: medium;
+  transition: all 0.3s ease;
+}
+
+#x-button:hover {
+  background-color: #ffffff;
+  color: #949494;
+  border: 1px solid #949494;
+  box-shadow: 0px 0px 3px 0px #949494;
+  transition: all 0.3s ease;
+}
+

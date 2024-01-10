@@ -162,7 +162,7 @@ const handleModal = (action) => {
 };
 
 document.addEventListener("click", (event) => {
-  if (event.target.id === "backdrop" || event.target.id === "modal-close-x") {
+  if (event.target.id === "backdrop" || event.target.id === "x-button") {
     handleModal('close');
   }
 });
