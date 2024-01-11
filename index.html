@@ -17,6 +17,11 @@
       referrerpolicy="no-referrer"
     />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+
+    <!---------------  Chart JS  --------------------->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!---------------  Chart JS Plugin  --------------------->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js"></script>
   </head>
 
   <body>
@@ -37,10 +42,10 @@
         <div class="image-opacity-layer"></div>
         <div class="content-container">
           <div id="mainbox" class="mainbox">
-            <i class="fa-solid fa-location-dot"></i>
-            <div id="box" class="box">
-              <div class="box1"></div>
-              <div class="box2"></div>
+            <div id="spin-wheel-container">
+              <canvas id="spin-wheel" width="400" height="400"></canvas>
+              <button id="spin_btn">Spin</button>
+              <i class="fa-solid fa-location-dot"></i>
             </div>
             <button class="wheel-center" style="cursor: default"></button>
           </div>
@@ -79,12 +84,7 @@
                 placeholder="Email"
                 required
               />
-              <button
-                type="submit"
-                class="btn spin"
-                onclick="handleRotate()"
-                disabled
-              >
+              <button type="submit" class="btn spin">
                 <span>Try your luck</span>
               </button>
             </form>

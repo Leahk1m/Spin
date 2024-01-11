@@ -57,93 +57,7 @@ body {
 }
 
 /* wheel styling */
-.box {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  font-weight: bold;
-  border-radius: 50%;
-  border: 10px solid white;
-  overflow: hidden;
-  transition: all ease 5s;
-  right: 50%;
-}
-
-.wheel-center {
-  position: absolute;
-  top: 50%;
-  right: 85%;
-  transform: translate(-50%, -50%);
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-  border: 4px solid #fff;
-  color: #fff;
-  box-shadow: 0 5px 20px #000;
-  font-weight: bold;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-span {
-  width: 50%;
-  height: 50%;
-  display: inline-block;
-  position: absolute;
-}
-.span1 {
-  clip-path: polygon(0 92%, 100% 50%, 0 8%);
-  background-color: #a1e2e6;
-  top: 120px;
-  left: 0;
-}
-.span2 {
-  clip-path: polygon(100% 92%, 0 50%, 100% 8%);
-  background-color: #6c78f0;
-  top: 120px;
-  right: 0;
-}
-.span3 {
-  clip-path: polygon(50% 0%, 8% 100%, 92% 100%);
-  background-color: #ff91c9;
-  bottom: 0;
-  left: 120px;
-}
-.span4 {
-  clip-path: polygon(50% 100%, 92% 0, 8% 0);
-  background-color: #fbee85;
-  top: 0;
-  left: 120px;
-}
-
-.box1 .span3 b {
-  transform: translate(-50%, -50%) rotate(-270deg);
-}
-.box1 .span1 b,
-.box2 .span1 b {
-  transform: translate(-50%, -50%) rotate(185deg);
-}
-.box2 .span3 b {
-  transform: translate(-50%, -50%) rotate(90deg);
-}
-.box1 .span4 b,
-.box2 .span4 b {
-  transform: translate(-50%, -50%) rotate(-85deg);
-}
-
-span b {
-  font-size: 1rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.box2 {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-135deg);
-}
+/*  */
 
 .fa-location-dot {
   position: absolute;
@@ -311,4 +225,8 @@ span b {
   left: 0;
   right: 0;
   bottom: 0;
+}
+#spin-wheel {
+  position: absolute;
+  right: 50%;
 }

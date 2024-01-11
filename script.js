@@ -1,85 +1,103 @@
 const discountsArray = [];
+let spinChart;
+let spinBtn;
 
-window.onload = (event) => {
-  /// api call to retrieve discounts/segments
-  async function fetchDiscounts() {
+window.onload = async (event) => {
+  spinBtn = document.querySelector(".btn.spin");
+
+  const spinColors = [
+    "#a1e2e6",
+    "#6c78f0",
+    "#ff91c9",
+    "#fbee85",
+    "#ffcc29",
+    "#a1e2e6",
+    "#6c78f0",
+    "#ff91c9",
+    "#fbee85",
+    "#ffb6b9",
+    "#a1e2e6",
+    "#6c78f0",
+  ];
+
+  try {
     const response = await fetch(
       "https://callbacks.dev.sakari.io/spintowin/13"
     );
     const discounts = await response.json();
-    createWheelSegments(discounts.data);
-    console.log("discounts", discounts);
-  }
-
-  /// create wheel discounts/segments as spans
-  const createWheelSegments = (discounts) => {
-    const box1 = document.querySelector(".box1");
-    const box2 = document.querySelector(".box2");
-
-    discounts.forEach((discount, index) => {
-      discountsArray.push(discount);
-      console.log("discount lol", discount);
-      const span = document.createElement("span");
-      span.classList.add(`span${index}`);
-      span.innerHTML = `<b>${discount}</b>`;
-
-      if (index < 4) {
-        box1.appendChild(span);
-      } else {
-        box2.appendChild(span);
-      }
+    discounts.data.forEach((discount, index) => {
+      discountsArray.push({ code: discount, index: index });
     });
-  };
-  fetchDiscounts();
+
+    console.log("did the API return", discounts);
+
+    spinChart = new Chart("spin-wheel", {
+      type: "pie",
+      plugins: [ChartDataLabels],
+      data: {
+        labels: discountsArray.map((discount, index) => {
+          const rotationDegrees = index * (360 / discountsArray.length);
+          return `${discount.code} (${rotationDegrees}°)`;
+        }),
+        datasets: [
+          {
+            data: [1, 1, 1, 1, 1],
+            backgroundColor: spinColors,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        animation: { duration: 0 },
+        plugins: {
+          tooltip: false,
+          legend: {
+            display: false,
+          },
+          datalabels: {
+            rotation: 90,
+            color: "#ffffff",
+            formatter: (_, context) =>
+              context.chart.data.labels[context.dataIndex],
+            font: { size: 24 },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.error("error fetching discounts:", error);
+  }
 };
 
-/// spinning wheel logic
-function handleRotate(couponCode) {
-  const index = discountsArray.indexOf(couponCode);
+function generateValue(targetCouponCode) {
+  spinBtn.disabled = true;
+  const targetDiscount = discountsArray.find(
+    (discount) => discount.code === targetCouponCode
+  );
+  if (!targetDiscount) {
+    return;
+  }
+
   const totalDiscounts = discountsArray.length;
   const degreesPerDiscount = 360 / totalDiscounts;
-  const targetDegrees = index * degreesPerDiscount;
+  const targetAngle = 360 - targetDiscount.index * degreesPerDiscount;
+  const totalDegrees = 2800 + targetAngle; // 8 spins + target angle
 
-  var minSpins = 3;
-  var maxSpins = 6;
-  var spins = Math.floor(Math.random() * (maxSpins - minSpins)) + minSpins;
-  var totalDegrees = spins * 360 + targetDegrees;
+  const rotationInterval = window.setInterval(() => {
+    const currentRotation = spinChart.options.rotation;
+    const newRotation = currentRotation + 10;
+    spinChart.options.rotation = newRotation;
+    spinChart.update();
 
-  var box = document.getElementById("box");
-  box.style.transition = "transform 5s ease-out";
-  box.style.transform = `rotate(${totalDegrees}deg)`;
-  document.querySelector(".btn.spin").disabled = true;
-
-  setTimeout(function () {
-    document.getElementById("spin-to-win-form").style.display = "none";
-    document.getElementById("congrats-message").style.display = "block";
-    document.getElementById("confetti-wrapper").style.display = "block";
-    document.querySelector(".btn.spin").disabled = false;
-    renderConfetti();
-  }, 5000);
+    if (newRotation >= totalDegrees) {
+      clearInterval(rotationInterval);
+      spinChart.options.rotation = targetAngle;
+      spinChart.update();
+      spinBtn.disabled = false;
+    }
+  }, 10);
 }
 
-/// confetti logic after spinning wheel
-function renderConfetti() {
-  const containerBounds = document
-    .getElementById("confetti-wrapper")
-    .getBoundingClientRect();
-
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: {
-      x:
-        (containerBounds.left + containerBounds.right) /
-        (2 * window.innerWidth),
-      y:
-        (containerBounds.top + containerBounds.bottom) /
-        (2 * window.innerHeight),
-    },
-  });
-}
-
-/// form submit for first name, last name, email
 document
   .getElementById("spin-to-win-form")
   .addEventListener("submit", function (event) {
@@ -104,17 +122,37 @@ document
         const couponCode = data.data.offer.label;
         console.log("coupon code", couponCode);
 
-        handleRotate(couponCode);
+        generateValue(couponCode);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   });
 
+/// confetti logic after spinning wheel
+function renderConfetti() {
+  const containerBounds = document
+    .getElementById("confetti-wrapper")
+    .getBoundingClientRect();
+
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: {
+      x:
+        (containerBounds.left + containerBounds.right) /
+        (2 * window.innerWidth),
+      y:
+        (containerBounds.top + containerBounds.bottom) /
+        (2 * window.innerHeight),
+    },
+  });
+}
+
 /// form validation (submit button disabled unless all fields are filled)
 document.addEventListener("DOMContentLoaded", function () {
   const textFields = document.querySelectorAll(".textfield");
-  const submitButton = document.getElementById("submitButton");
+  const submitButton = document.querySelector(".btn.spin");
 
   textFields.forEach((textfield) => {
     console.log("textfield", textfield);
@@ -129,19 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
         submitButton.disabled = true;
       }
     });
-  });
-});
-
-$(document).ready(function () {
-  $("#dialog").dialog({
-    autoOpen: true,
-    modal: true,
-    width: "auto",
-    height: "auto",
-  });
-
-  $("#openDialog").click(function () {
-    $("#dialog").dialog("open");
   });
 });
 
