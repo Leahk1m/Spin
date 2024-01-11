@@ -50,15 +50,15 @@ function handleRotate(couponCode) {
 
   setTimeout(function () {
     document.getElementById("spin-to-win-form").style.display = "none";
-    document.getElementById("congratsMessage").style.display = "block";
-    document.getElementById("confettiWrapper").style.display = "block";
+    document.getElementById("congrats-message").style.display = "block";
+    document.getElementById("confetti-wrapper").style.display = "block";
     renderConfetti();
   }, 5000);
 }
 
 function renderConfetti() {
   var containerBounds = document
-    .getElementById("confettiWrapper")
+    .getElementById("confetti-wrapper")
     .getBoundingClientRect();
 
   confetti({
@@ -140,7 +140,7 @@ $(document).ready(function () {
 });
 
 document
-  .getElementById("statsButton")
+  .getElementById("stats-button")
   .addEventListener("click", function (event) {
     const conversions = document.getElementById("conversions");
     const views = document.getElementById("views");
@@ -178,10 +178,10 @@ function renderStats(data) {
 
   conversions.style.display = "block";
   views.style.display = "block";
-  document.getElementById("statsButton").textContent = "Hide Stats";
+  document.getElementById("stats-button").textContent = "Hide Stats";
 }
 
-document.getElementById("openModalButton").addEventListener("click", () => {
+document.getElementById("open-modal-button").addEventListener("click", () => {
   if (modal.classList.contains("show")) {
     handleModal("close");
   } else {
@@ -192,7 +192,7 @@ document.getElementById("openModalButton").addEventListener("click", () => {
 const handleModal = (action) => {
   const modal = document.getElementById("modal");
   const backdrop = document.getElementById("backdrop");
-  const openModalButton = document.getElementById("openModalButton");
+  const openModalButton = document.getElementById("open-modal-button");
 
   switch (action) {
     case "open":

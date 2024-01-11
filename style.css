@@ -290,3 +290,31 @@ span b {
   box-shadow: 0px 0px 3px 0px #949494;
   transition: all 0.3s ease;
 }
+
+#stats-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  gap: 8px;
+}
+
+.x-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  position: absolute;
+  padding: 10px;
+}
+
+#confetti-wrapper {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

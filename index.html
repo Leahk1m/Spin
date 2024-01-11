@@ -21,36 +21,15 @@
 
   <body>
     <div id="backdrop"></div>
-    <div
-      id="stats-container"
-      style="
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        position: absolute;
-        gap: 8px;
-      "
-    >
-      <button id="statsButton" class="btn">Show Stats</button>
-      <button id="openModalButton" class="btn">Open Modal</button>
+    <div id="stats-container">
+      <button id="stats-button" class="btn">Show Stats</button>
+      <button id="open-modal-button" class="btn">Open Modal</button>
       <h4 id="conversions" style="display: none">Conversions:</h4>
       <h4 id="views" style="display: none">Views:</h4>
     </div>
 
     <div id="modal">
-      <div
-        class="modal-close-x-container"
-        style="
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-          cursor: pointer;
-          position: absolute;
-          padding: 10px;
-        "
-      >
+      <div class="x-button-container">
         <i class="fa-solid fa-x" id="x-button" style="cursor: pointer"></i>
       </div>
 
@@ -66,18 +45,8 @@
             <button class="wheel-center" style="cursor: default"></button>
           </div>
           <div id="user-form">
-            <h1 id="congratsMessage" style="display: none">Congratulations!</h1>
-            <div
-              id="confettiWrapper"
-              style="
-                pointer-events: none;
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-              "
-            ></div>
+            <h1 id="congrats-message" style="display: none">Congratulations!</h1>
+            <div id="confetti-wrapper"></div>
 
             <form id="spin-to-win-form">
               <h2>Spin To Win!</h2>
