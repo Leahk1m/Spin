@@ -1,3 +1,38 @@
+const discountsArray = [];
+
+window.onload = (event) => {
+  ////api call to retrieve discounts/segments
+  async function fetchDiscounts() {
+    const response = await fetch(
+      "https://callbacks.dev.sakari.io/spintowin/13"
+    );
+    const discounts = await response.json();
+    createWheelSegments(discounts.data);
+    console.log("discounts", discounts);
+  }
+
+  /// create wheel discounts/segments
+  const createWheelSegments = (discounts) => {
+    const box1 = document.querySelector(".box1");
+    const box2 = document.querySelector(".box2");
+
+    discounts.forEach((discount, index) => {
+      discountsArray.push(discount);
+      console.log("discount lol", discount);
+      const span = document.createElement("span");
+      span.classList.add(`span${index}`);
+      span.innerHTML = `<b>${discount}</b>`;
+
+      if (index < 4) {
+        box1.appendChild(span);
+      } else {
+        box2.appendChild(span);
+      }
+    });
+  };
+  fetchDiscounts();
+};
+
 function handleRotate(couponCode) {
   const index = discountsArray.indexOf(couponCode);
   const totalDiscounts = discountsArray.length;

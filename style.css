@@ -35,8 +35,7 @@ body {
   background-size: cover;
   background-position: center;
   opacity: 0.7;
-
-  border-radius: 10px;
+  border-radius: 0px 10px 10px 0px;
 }
 
 .content-container {
@@ -193,7 +192,7 @@ span b {
   width: 100%;
 }
 
-.spinButton {
+.btn {
   position: relative;
   display: inline-block;
   height: auto;
@@ -203,9 +202,15 @@ span b {
   border: 1px solid black;
   color: white;
   transition: all 0.3s ease;
-  width: 100%;
+  padding: 10px;
 }
-.spinButton span {
+
+.btn.spin {
+  width: 100%;
+  padding: 6px;
+}
+
+.btn span {
   position: relative;
   display: inline-block;
   font-size: 14px;
@@ -219,13 +224,13 @@ span b {
   transition: 0.2s;
 }
 
-.spinButton:hover {
+.btn:hover {
   color: black;
   background-color: white;
   border: 1px solid black;
 }
 
-.spinButton:disabled {
+.btn:disabled {
   background-color: #ccc;
   color: white;
   cursor: default;
@@ -249,9 +254,7 @@ span b {
   position: absolute;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 30;
-  /* padding: 20px; */
   border-radius: 12px;
-  /* background-color: white; */
   opacity: 0;
   transition: opacity 0.2s ease;
 }

@@ -20,49 +20,21 @@
   </head>
 
   <body>
-    <script type="text/javascript">
-      var discountsArray = [];
-
-      fetch("https://callbacks.dev.sakari.io/spintowin/13")
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          createSpans(data.data);
-        })
-        .catch((err) => {
-          console.log("error:", err);
-        });
-
-      function createSpans(discounts) {
-        const box1 = document.querySelector(".box1");
-        const box2 = document.querySelector(".box2");
-
-        discounts.forEach((discount, index) => {
-          discountsArray.push(discount);
-          const span = document.createElement("span");
-          span.innerHTML = `<b>${discount}</b>`;
-
-          let spanClassIndex = (index % 4) + 1;
-          span.classList.add(`span${spanClassIndex}`);
-
-          if (index < 4) {
-            box1.appendChild(span);
-          } else {
-            box2.appendChild(span);
-          }
-        });
-      }
-    </script>
     <div id="backdrop"></div>
-
     <div
-      style="position: absolute; left: 50%; z-index: 9999"
       id="stats-container"
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        position: absolute;
+        gap: 8px;
+      "
     >
-      <button id="statsButton" class="spinButton">Show Stats</button>
-
-      <button id="openModalButton" class="spinButton">Open Modal</button>
+      <button id="statsButton" class="btn">Show Stats</button>
+      <button id="openModalButton" class="btn">Open Modal</button>
       <h4 id="conversions" style="display: none">Conversions:</h4>
       <h4 id="views" style="display: none">Views:</h4>
     </div>
@@ -138,7 +110,7 @@
               />
               <button
                 type="submit"
-                class="spinButton"
+                class="btn spin"
                 id="submitButton"
                 onclick="handleRotate()"
                 disabled
@@ -150,7 +122,6 @@
         </div>
       </div>
     </div>
-
     <script src="script.js"></script>
   </body>
 </html>
