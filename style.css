@@ -13,7 +13,6 @@ body {
   height: 100vh;
   overflow: hidden;
   background-size: cover;
-  /* background-image: url('https://framerusercontent.com/images/rremRFegwTx3kjT7QzG7ZeHQeMY.jpg') */
 }
 
 .background-container {
@@ -56,27 +55,7 @@ body {
   position: relative;
   width: 500px;
   height: 500px;
-  /* right: 50%; */
 }
-/* .mainbox.animate:after{
-  animation: animateArrow 0.7s ease infinite;
-}
-@keyframes animateArrow{
-  50%{
-    right: -40px;
-  }
-} */
-
-/* .mainbox:after{
-  position: absolute;
-  content: '';
-  width: 32px;
-  height: 32px;
-  background-size: 32px;
-  right: -30px;
-  top: 50%;
-  transform: translateY(-50%);
-} */
 
 /* wheel styling */
 .box {
@@ -214,29 +193,12 @@ span b {
   width: 100%;
 }
 
-/* .spinButton {
-  background-color: black;
-  color: #fff; 
-  padding: 15px 30px;
-  margin-top: 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer; 
-  transition: background-color 0.3s ease; 
-  padding: 10px;
-  width: 100%;
-} */
-
 .spinButton {
   position: relative;
   display: inline-block;
-  width: auto;
   height: auto;
   background-color: black;
-  border: none;
   cursor: pointer;
-
   min-width: 150px;
   border: 1px solid black;
   color: white;
