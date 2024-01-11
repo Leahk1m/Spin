@@ -145,12 +145,6 @@ span b {
   transform: rotate(-135deg);
 }
 
-.spin:active {
-  width: 70px;
-  height: 70px;
-  font-size: 20px;
-}
-
 .fa-location-dot {
   position: absolute;
   top: 22%;
@@ -203,11 +197,12 @@ span b {
   color: white;
   transition: all 0.3s ease;
   padding: 10px;
+  text-transform: uppercase;
 }
 
 .btn.spin {
   width: 100%;
-  padding: 6px;
+  padding: 0;
 }
 
 .btn span {
@@ -216,7 +211,6 @@ span b {
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2px;
-  text-transform: uppercase;
   top: 0;
   left: 0;
   width: 100%;

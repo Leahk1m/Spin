@@ -11,7 +11,7 @@ window.onload = (event) => {
     console.log("discounts", discounts);
   }
 
-  /// create wheel discounts/segments
+  /// create wheel discounts/segments as spans
   const createWheelSegments = (discounts) => {
     const box1 = document.querySelector(".box1");
     const box2 = document.querySelector(".box2");
@@ -48,18 +48,20 @@ function handleRotate(couponCode) {
   var box = document.getElementById("box");
   box.style.transition = "transform 5s ease-out";
   box.style.transform = `rotate(${totalDegrees}deg)`;
+  document.querySelector(".btn.spin").disabled = true;
 
   setTimeout(function () {
     document.getElementById("spin-to-win-form").style.display = "none";
     document.getElementById("congrats-message").style.display = "block";
     document.getElementById("confetti-wrapper").style.display = "block";
+    document.querySelector(".btn.spin").disabled = false;
     renderConfetti();
   }, 5000);
 }
 
 /// confetti logic after spinning wheel
 function renderConfetti() {
-  var containerBounds = document
+  const containerBounds = document
     .getElementById("confetti-wrapper")
     .getBoundingClientRect();
 
