@@ -1,7 +1,7 @@
 const discountsArray = [];
 
 window.onload = (event) => {
-  ////api call to retrieve discounts/segments
+  /// api call to retrieve discounts/segments
   async function fetchDiscounts() {
     const response = await fetch(
       "https://callbacks.dev.sakari.io/spintowin/13"
@@ -33,6 +33,7 @@ window.onload = (event) => {
   fetchDiscounts();
 };
 
+/// spinning wheel logic
 function handleRotate(couponCode) {
   const index = discountsArray.indexOf(couponCode);
   const totalDiscounts = discountsArray.length;
@@ -56,6 +57,7 @@ function handleRotate(couponCode) {
   }, 5000);
 }
 
+/// confetti logic after spinning wheel
 function renderConfetti() {
   var containerBounds = document
     .getElementById("confetti-wrapper")
@@ -75,6 +77,7 @@ function renderConfetti() {
   });
 }
 
+/// form submit for first name, last name, email
 document
   .getElementById("spin-to-win-form")
   .addEventListener("submit", function (event) {
@@ -106,6 +109,7 @@ document
       });
   });
 
+/// form validation (submit button disabled unless all fields are filled)
 document.addEventListener("DOMContentLoaded", function () {
   const textFields = document.querySelectorAll(".textfield");
   const submitButton = document.getElementById("submitButton");
@@ -139,6 +143,7 @@ $(document).ready(function () {
   });
 });
 
+/// show stats
 document
   .getElementById("stats-button")
   .addEventListener("click", function (event) {
@@ -180,6 +185,8 @@ function renderStats(data) {
   views.style.display = "block";
   document.getElementById("stats-button").textContent = "Hide Stats";
 }
+
+/// open/close modal handling
 
 document.getElementById("open-modal-button").addEventListener("click", () => {
   if (modal.classList.contains("show")) {
