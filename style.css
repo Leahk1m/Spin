@@ -1,12 +1,12 @@
-
- *{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   outline: none;
+  font-family: "Courier New", Courier, monospace;
 }
 
-body{
+body {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -19,7 +19,6 @@ body{
 .background-container {
   position: relative;
   padding: 20px;
-
 }
 
 .image-opacity-layer {
@@ -32,11 +31,11 @@ body{
   /* background-image: url('https://snowboardmag.com/wp-content/uploads/2016/09/those-days-jussi-oksanen-dean-blotto-gray-snowboarding-for-slider-1400x900.jpg'); */
   /* background-image: url('https://assets.wsimgs.com/wsimgs/rk/images/dp/wcm/202340/0026/open-kitchen-by-williams-sonoma-lemon-press-o.jpg'); */
   /* background-image: url('https://blog.williams-sonoma.com/wp-content/uploads/2020/03/zoom-blog-icecreamsand-feature-march-20.jpg'); */
-  background-image: url('https://hips.hearstapps.com/hmg-prod/images/delish-profiteroles-05-1644593689.jpeg?crop=1xw:0.7874231032125769xh;center,top');
+  background-image: url("https://hips.hearstapps.com/hmg-prod/images/delish-profiteroles-05-1644593689.jpeg?crop=1xw:0.7874231032125769xh;center,top");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  opacity: 0.7; 
+  opacity: 0.7;
 
   border-radius: 10px;
 }
@@ -47,16 +46,13 @@ body{
   align-items: center;
   padding-right: 150px;
   position: relative;
-  z-index: 2; 
-  background-repeat: repeat; 
+  z-index: 2;
+  background-repeat: repeat;
   background-size: cover;
-  background-position: center; 
-  
+  background-position: center;
 }
 
-
-
-.mainbox{
+.mainbox {
   position: relative;
   width: 500px;
   height: 500px;
@@ -71,7 +67,6 @@ body{
   }
 } */
 
-
 /* .mainbox:after{
   position: absolute;
   content: '';
@@ -84,7 +79,7 @@ body{
 } */
 
 /* wheel styling */
-.box{
+.box {
   width: 100%;
   height: 100%;
   position: relative;
@@ -92,11 +87,11 @@ body{
   border-radius: 50%;
   border: 10px solid white;
   overflow: hidden;
-  transition: all ease 5s; 
+  transition: all ease 5s;
   right: 50%;
 }
 
-.wheel-center{
+.wheel-center {
   position: absolute;
   top: 50%;
   right: 85%;
@@ -112,54 +107,53 @@ body{
   cursor: pointer;
 }
 
-
-span{
+span {
   width: 50%;
   height: 50%;
   display: inline-block;
   position: absolute;
 }
-.span1{
+.span1 {
   clip-path: polygon(0 92%, 100% 50%, 0 8%);
-  background-color: #A1E2E6;
+  background-color: #a1e2e6;
   top: 120px;
   left: 0;
 }
-.span2{
+.span2 {
   clip-path: polygon(100% 92%, 0 50%, 100% 8%);
-  background-color: #6C78F0;
+  background-color: #6c78f0;
   top: 120px;
   right: 0;
 }
-.span3{
+.span3 {
   clip-path: polygon(50% 0%, 8% 100%, 92% 100%);
-  background-color: #FF91C9;
+  background-color: #ff91c9;
   bottom: 0;
   left: 120px;
 }
-.span4{
+.span4 {
   clip-path: polygon(50% 100%, 92% 0, 8% 0);
-  background-color:  #FBEE85;
+  background-color: #fbee85;
   top: 0;
   left: 120px;
 }
 
-.box1 .span3 b{
+.box1 .span3 b {
   transform: translate(-50%, -50%) rotate(-270deg);
 }
 .box1 .span1 b,
-.box2 .span1 b{
+.box2 .span1 b {
   transform: translate(-50%, -50%) rotate(185deg);
 }
-.box2 .span3 b{
+.box2 .span3 b {
   transform: translate(-50%, -50%) rotate(90deg);
 }
 .box1 .span4 b,
-.box2 .span4 b{
+.box2 .span4 b {
   transform: translate(-50%, -50%) rotate(-85deg);
 }
 
-span b{
+span b {
   font-size: 1rem;
   position: absolute;
   top: 50%;
@@ -167,20 +161,17 @@ span b{
   transform: translate(-50%, -50%);
 }
 
-.box2{
+.box2 {
   width: 100%;
   height: 100%;
   transform: rotate(-135deg);
 }
 
-
-.spin:active{
+.spin:active {
   width: 70px;
   height: 70px;
   font-size: 20px;
 }
-
-
 
 .fa-location-dot {
   position: absolute;
@@ -190,7 +181,6 @@ span b{
   z-index: 99;
   font-size: 2.2rem;
 }
-
 
 #user-form {
   text-align: center;
@@ -203,12 +193,12 @@ span b{
 }
 
 #user-form h2 {
-  color: #000; 
+  color: #000;
   margin-bottom: 15px;
 }
 
 #user-form p {
-  color: #333; 
+  color: #333;
   margin-bottom: 20px;
 }
 
@@ -216,34 +206,68 @@ span b{
   font-size: 16px;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ddd; 
+  border: 1px solid #ddd;
   border-radius: 4px;
-  display: block; 
-  width: 250px; 
-  box-sizing: border-box; 
+  display: block;
+  width: 250px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.spinButton {
-  background-color:  #55BBEB;
+/* .spinButton {
+  background-color: black;
   color: #fff; 
   padding: 15px 30px;
   margin-top: 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   font-size: 16px;
   cursor: pointer; 
   transition: background-color 0.3s ease; 
   padding: 10px;
   width: 100%;
+} */
+
+.spinButton {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  background-color: black;
+  border: none;
+  cursor: pointer;
+
+  min-width: 150px;
+  border: 1px solid black;
+  color: white;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+.spinButton span {
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  transition: 0.2s;
 }
 
 .spinButton:hover {
-  background-color: #1871ED;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
 }
 
 .spinButton:disabled {
   background-color: #ccc;
+  color: white;
   cursor: default;
+  border: none;
 }
 
 #backdrop {
@@ -257,7 +281,6 @@ span b{
 #backdrop.show {
   opacity: 1;
   pointer-events: auto;
-
 }
 
 #modal {
@@ -274,7 +297,7 @@ span b{
 #modal.show {
   opacity: 1;
   pointer-events: auto;
-} 
+}
 
 #x-button {
   display: flex;
@@ -302,4 +325,3 @@ span b{
   box-shadow: 0px 0px 3px 0px #949494;
   transition: all 0.3s ease;
 }
-

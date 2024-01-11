@@ -1,96 +1,155 @@
-
 <!DOCTYPE html>
-  <html>
-    <head>
-      <title>Leah's Spin to Win Wheel</title>
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-      <link href="style.css" rel="stylesheet" type="text/css" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" /> 
-      <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-    </head>
+<html>
+  <head>
+    <title>Leah's Spin to Win Wheel</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+  </head>
 
-    <body> 
-      <script type="text/javascript">
-        var discountsArray = [];
-  
-        fetch('https://callbacks.dev.sakari.io/spintowin/13').then(res => {
+  <body>
+    <script type="text/javascript">
+      var discountsArray = [];
+
+      fetch("https://callbacks.dev.sakari.io/spintowin/13")
+        .then((res) => {
           return res.json();
-        }).then(data => {
+        })
+        .then((data) => {
           createSpans(data.data);
-        }).catch(err => {
-          console.log('error:', err);
+        })
+        .catch((err) => {
+          console.log("error:", err);
         });
-      
+
       function createSpans(discounts) {
-        const box1 = document.querySelector('.box1');
-        const box2 = document.querySelector('.box2');
+        const box1 = document.querySelector(".box1");
+        const box2 = document.querySelector(".box2");
 
         discounts.forEach((discount, index) => {
-        discountsArray.push(discount);
-        const span = document.createElement('span');
-        span.innerHTML = `<b>${discount}</b>`;
+          discountsArray.push(discount);
+          const span = document.createElement("span");
+          span.innerHTML = `<b>${discount}</b>`;
 
-        let spanClassIndex = (index % 4) + 1;
-        span.classList.add(`span${spanClassIndex}`);
+          let spanClassIndex = (index % 4) + 1;
+          span.classList.add(`span${spanClassIndex}`);
 
-        if (index < 4) {
-          box1.appendChild(span);
-        } else {
-          box2.appendChild(span);
-        }
-    });
-  }
+          if (index < 4) {
+            box1.appendChild(span);
+          } else {
+            box2.appendChild(span);
+          }
+        });
+      }
     </script>
-      <div id="backdrop"></div>
+    <div id="backdrop"></div>
 
-    <div style="position: absolute; left: 50%; z-index: 9999" id="stats-container">
+    <div
+      style="position: absolute; left: 50%; z-index: 9999"
+      id="stats-container"
+    >
       <button id="statsButton" class="spinButton">Show Stats</button>
 
-    <button id="openModalButton" class="spinButton">Open Modal</button>
-      <h4 id="conversions" style="display: none;">Conversions: </h4>
-      <h4 id="views" style="display: none;">Views: </h4>
-    </div>
-  
-  <div id="modal">
-    <div class="modal-close-x-container" style="width: 100%; display: flex; justify-content: flex-end; cursor: pointer; position: absolute; padding: 10px">
-        <i class="fa-solid fa-x" id="x-button" style="cursor: pointer;"></i>
+      <button id="openModalButton" class="spinButton">Open Modal</button>
+      <h4 id="conversions" style="display: none">Conversions:</h4>
+      <h4 id="views" style="display: none">Views:</h4>
     </div>
 
-    <div class="background-container">
-      <div class="image-opacity-layer"></div>
-      <div class="content-container" >
-        <div id="mainbox" class="mainbox">
-          <i class="fa-solid fa-location-dot"></i>
-          <div id="box" class="box">
-            <div class="box1">
+    <div id="modal">
+      <div
+        class="modal-close-x-container"
+        style="
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+          cursor: pointer;
+          position: absolute;
+          padding: 10px;
+        "
+      >
+        <i class="fa-solid fa-x" id="x-button" style="cursor: pointer"></i>
+      </div>
+
+      <div class="background-container">
+        <div class="image-opacity-layer"></div>
+        <div class="content-container">
+          <div id="mainbox" class="mainbox">
+            <i class="fa-solid fa-location-dot"></i>
+            <div id="box" class="box">
+              <div class="box1"></div>
+              <div class="box2"></div>
             </div>
-            <div class="box2">
-            </div>
-          </div> 
-          <button class="wheel-center" style="cursor: default"></button>
-        </div>
-        <div id="user-form">
-          
-          <h1 id="congratsMessage" style="display: none;">Congratulations!</h1>
-          <div id="confettiWrapper" style="pointer-events: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; "></div>
-          
-          <form id="spin-to-win-form">
-            <h2>Spin To Win!</h2>
-            <p>Enter your info for the chance to win</p>
-            <input type="text" class="textfield" name="firstName" id="firstName" placeholder="First Name" required>
-            <input type="text" class="textfield" name="lastName" id="lastName" placeholder="Last Name" required>
-            <input type="email" class="textfield" name="email" id="email" placeholder="Email" required>
-            <button type="submit" class="spinButton" id="submitButton" onclick="handleRotate()" disabled>Try your luck</button>
-          </form>
+            <button class="wheel-center" style="cursor: default"></button>
+          </div>
+          <div id="user-form">
+            <h1 id="congratsMessage" style="display: none">Congratulations!</h1>
+            <div
+              id="confettiWrapper"
+              style="
+                pointer-events: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+              "
+            ></div>
+
+            <form id="spin-to-win-form">
+              <h2>Spin To Win!</h2>
+              <p>
+                Enter your info for the chance to win one of our big discounts!
+              </p>
+              <input
+                type="text"
+                class="textfield"
+                name="firstName"
+                id="firstName"
+                placeholder="First Name"
+                required
+              />
+              <input
+                type="text"
+                class="textfield"
+                name="lastName"
+                id="lastName"
+                placeholder="Last Name"
+                required
+              />
+              <input
+                type="email"
+                class="textfield"
+                name="email"
+                id="email"
+                placeholder="Email"
+                required
+              />
+              <button
+                type="submit"
+                class="spinButton"
+                id="submitButton"
+                onclick="handleRotate()"
+                disabled
+              >
+                <span>Try your luck</span>
+              </button>
+            </form>
           </div>
         </div>
+      </div>
     </div>
-  </div>
-
 
     <script src="script.js"></script>
   </body>
