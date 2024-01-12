@@ -16,11 +16,9 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 
-    <!---------------  Chart JS  --------------------->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <!---------------  Chart JS Plugin  --------------------->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js"></script>
   </head>
 
@@ -43,11 +41,10 @@
         <div class="content-container">
           <div id="mainbox" class="mainbox">
             <div id="spin-wheel-container">
-              <canvas id="spin-wheel" width="400" height="400"></canvas>
-              <button id="spin_btn">Spin</button>
+              <canvas id="spin-wheel" width="400" height="400"> </canvas>
+              <button id="wheel-center"></button>
               <i class="fa-solid fa-location-dot"></i>
             </div>
-            <button class="wheel-center" style="cursor: default"></button>
           </div>
           <div id="user-form">
             <h1 id="congrats-message" style="display: none">

@@ -1,4 +1,35 @@
 const discountsArray = [];
+let rotationDegrees;
+const defaultDiscounts = [
+  {
+    code: "100%",
+    index: 0,
+  },
+  {
+    code: "Charity Donation",
+    index: 0,
+  },
+  {
+    code: "Free sakari swag",
+    index: 0,
+  },
+  {
+    code: "90%",
+    index: 0,
+  },
+  {
+    code: "Hawaii vacation",
+    index: 0,
+  },
+  {
+    code: "iPhone 12",
+    index: 0,
+  },
+  {
+    code: "Macbook pro",
+    index: 0,
+  },
+];
 let spinChart;
 let spinBtn;
 
@@ -29,19 +60,34 @@ window.onload = async (event) => {
       discountsArray.push({ code: discount, index: index });
     });
 
-    console.log("did the API return", discounts);
+    while (discountsArray.length < 12) {
+      //randomly select from default discounts array
+      const randomIndex = Math.floor(Math.random() * defaultDiscounts.length);
+      //update the index of the default discount and add to all discounts array
+      const randomDiscount = defaultDiscounts[randomIndex];
+      if (!discountsArray.includes(randomDiscount)) {
+        discountsArray.push({
+          code: randomDiscount.code,
+          index: discountsArray.length,
+        });
+      }
+    }
 
+    console.log("lol discounts arr", discountsArray);
+
+    //https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html
     spinChart = new Chart("spin-wheel", {
       type: "pie",
       plugins: [ChartDataLabels],
       data: {
         labels: discountsArray.map((discount, index) => {
-          const rotationDegrees = index * (360 / discountsArray.length);
-          return `${discount.code} (${rotationDegrees}°)`;
+          rotationDegrees = index * (360 / discountsArray.length);
+          return discount.code;
+          // return `${discount.code} (${rotationDegrees}°)`;
         }),
         datasets: [
           {
-            data: [1, 1, 1, 1, 1],
+            data: Array.from({ length: 12 }, (_, index) => 1),
             backgroundColor: spinColors,
           },
         ],
@@ -55,11 +101,23 @@ window.onload = async (event) => {
             display: false,
           },
           datalabels: {
-            rotation: 90,
+            rotation: rotationDegrees,
             color: "#ffffff",
-            formatter: (_, context) =>
-              context.chart.data.labels[context.dataIndex],
-            font: { size: 24 },
+            formatter: (_, context) => {
+              const label = context.chart.data.labels[context.dataIndex];
+              const splitLabels = label.split(" ");
+
+              if (splitLabels.length > 1) {
+                return splitLabels[0] + "\n" + splitLabels[1];
+              } else {
+                return label;
+              }
+            },
+            // context.chart.data.labels[context.dataIndex],
+            font: { size: 18 },
+            anchor: "end",
+            align: "start",
+            textAlign: "center",
           },
         },
       },
@@ -78,7 +136,7 @@ function generateValue(targetCouponCode) {
     return;
   }
 
-  const totalDiscounts = discountsArray.length;
+  const totalDiscounts = 12;
   const degreesPerDiscount = 360 / totalDiscounts;
   const targetAngle = 360 - targetDiscount.index * degreesPerDiscount;
   const totalDegrees = 2800 + targetAngle; // 8 spins + target angle
@@ -86,6 +144,10 @@ function generateValue(targetCouponCode) {
   const rotationInterval = window.setInterval(() => {
     const currentRotation = spinChart.options.rotation;
     const newRotation = currentRotation + 10;
+
+    const wheel = document.getElementById("spin-wheel");
+    wheel.style.transition = "transform 5s ease-out";
+
     spinChart.options.rotation = newRotation;
     spinChart.update();
 
@@ -94,6 +156,7 @@ function generateValue(targetCouponCode) {
       spinChart.options.rotation = targetAngle;
       spinChart.update();
       spinBtn.disabled = false;
+      renderConfetti();
     }
   }, 10);
 }
