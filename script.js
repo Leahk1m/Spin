@@ -73,8 +73,6 @@ window.onload = async (event) => {
       }
     }
 
-    console.log("lol discounts arr", discountsArray);
-
     //https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html
     spinChart = new Chart("spin-wheel", {
       type: "pie",
@@ -83,7 +81,6 @@ window.onload = async (event) => {
         labels: discountsArray.map((discount, index) => {
           rotationDegrees = index * (360 / discountsArray.length);
           return discount.code;
-          // return `${discount.code} (${rotationDegrees}°)`;
         }),
         datasets: [
           {
@@ -114,7 +111,7 @@ window.onload = async (event) => {
               }
             },
             // context.chart.data.labels[context.dataIndex],
-            font: { size: 18 },
+            font: { size: 20 },
             anchor: "end",
             align: "start",
             textAlign: "center",
@@ -123,11 +120,13 @@ window.onload = async (event) => {
       },
     });
   } catch (error) {
-    console.error("error fetching discounts:", error);
+    console.error("error:", error);
   }
 };
+const arrow = document.getElementById("wheel-arrow");
 
-function generateValue(targetCouponCode) {
+// spin wheel and land on selected coupon code
+function landOnSelectedCode(targetCouponCode) {
   spinBtn.disabled = true;
   const targetDiscount = discountsArray.find(
     (discount) => discount.code === targetCouponCode
@@ -138,7 +137,10 @@ function generateValue(targetCouponCode) {
 
   const totalDiscounts = 12;
   const degreesPerDiscount = 360 / totalDiscounts;
-  const targetAngle = 360 - targetDiscount.index * degreesPerDiscount;
+  const targetAngle =
+    360 -
+    targetDiscount.index * degreesPerDiscount +
+    arrow.getBoundingClientRect().width;
   const totalDegrees = 2800 + targetAngle; // 8 spins + target angle
 
   const rotationInterval = window.setInterval(() => {
@@ -185,7 +187,7 @@ document
         const couponCode = data.data.offer.label;
         console.log("coupon code", couponCode);
 
-        generateValue(couponCode);
+        landOnSelectedCode(couponCode);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -218,16 +220,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitButton = document.querySelector(".btn.spin");
 
   textFields.forEach((textfield) => {
-    console.log("textfield", textfield);
     textfield.addEventListener("input", function (event) {
       const firstName = document.getElementById("firstName").value;
       const lastName = document.getElementById("lastName").value;
       const email = document.getElementById("email").value;
 
-      if (firstName && lastName && email) {
-        submitButton.disabled = false;
-      } else {
+      const validationMsg = document.getElementById("email").validationMessage;
+      if (validationMsg) {
         submitButton.disabled = true;
+      } else if (firstName && lastName && email && !validationMsg) {
+        submitButton.disabled = false;
       }
     });
   });
@@ -265,8 +267,6 @@ document
 function renderStats(data) {
   const conversions = document.getElementById("conversions");
   const views = document.getElementById("views");
-
-  console.log("data", data);
 
   conversions.innerHTML = `Conversions: ${data.conversations}`; //this should change from conversations to conversions
   views.innerHTML = `Views: ${data.views}`;

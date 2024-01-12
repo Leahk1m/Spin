@@ -42,7 +42,13 @@
           <div id="mainbox" class="mainbox">
             <div id="spin-wheel-container">
               <canvas id="spin-wheel" width="400" height="400"> </canvas>
-              <button id="wheel-center"></button>
+              <button id="wheel-center">
+                <i
+                  class="fa-solid fa-star"
+                  id="wheel-arrow"
+                  style="font-size: 3rem; color: #d2d2d2"
+                ></i>
+              </button>
               <i class="fa-solid fa-location-dot"></i>
             </div>
           </div>
@@ -51,7 +57,6 @@
               Congratulations!
             </h1>
             <div id="confetti-wrapper"></div>
-
             <form id="spin-to-win-form">
               <h2>Spin To Win!</h2>
               <p>
@@ -81,7 +86,9 @@
                 placeholder="Email"
                 required
               />
-              <button type="submit" class="btn spin">
+
+              <div id="validation-messages-container"></div>
+              <button type="submit" class="btn spin" disabled>
                 <span>Try your luck</span>
               </button>
             </form>
