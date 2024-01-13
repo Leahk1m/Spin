@@ -12,7 +12,7 @@ const defaultDiscounts = [
     index: 0,
   },
   {
-    code: "Free sakari swag",
+    code: "80%",
     index: 0,
   },
   {
@@ -315,6 +315,7 @@ const handleModal = (action) => {
 document.addEventListener("click", (event) => {
   if (event.target.id === "backdrop" || event.target.id === "x-button") {
     handleModal("close");
+    document.getElementById("change-theme-button").style.display = "none";
   }
 });
 
@@ -323,6 +324,7 @@ document.getElementById("change-theme-button").addEventListener("click", () => {
     ".image-opacity-layer"
   );
   const spinTitle = document.getElementById("spin-title");
+  const allTitles = document.querySelectorAll("h2");
 
   const allThemes = [
     {
@@ -347,7 +349,8 @@ document.getElementById("change-theme-button").addEventListener("click", () => {
       title: {
         text: "Begin your journey with a spin",
         color: "black",
-        textShadow: "#916767 1px 0 10px",
+        textShadow: "rgb(206 147 147 / 34%) 1px 0px 10px",
+        font: "auto",
       },
     },
   ];
@@ -362,4 +365,10 @@ document.getElementById("change-theme-button").addEventListener("click", () => {
   spinTitle.textContent = allThemes[currentThemeIndex].title.text;
   spinTitle.style.color = allThemes[currentThemeIndex].title.color;
   spinTitle.style.textShadow = allThemes[currentThemeIndex].title.textShadow;
+
+  if (allThemes[currentThemeIndex].title.font) {
+    spinTitle.style.fontFamily = allThemes[currentThemeIndex].title.font;
+  } else {
+    spinTitle.style.fontFamily = "monospace";
+  }
 });
