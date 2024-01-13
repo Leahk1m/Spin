@@ -1,5 +1,7 @@
 const discountsArray = [];
 let rotationDegrees;
+let currentThemeIndex = 0;
+
 const defaultDiscounts = [
   {
     code: "100%",
@@ -112,8 +114,8 @@ window.onload = async (event) => {
             },
             // context.chart.data.labels[context.dataIndex],
             font: { size: 20 },
-            anchor: "end",
-            align: "start",
+            anchor: "center",
+            align: "end",
             textAlign: "center",
           },
         },
@@ -279,10 +281,13 @@ function renderStats(data) {
 /// open/close modal handling
 
 document.getElementById("open-modal-button").addEventListener("click", () => {
+  const changeThemeButton = document.getElementById("change-theme-button");
   if (modal.classList.contains("show")) {
     handleModal("close");
+    changeThemeButton.style.display = "none";
   } else {
     handleModal("open");
+    changeThemeButton.style.display = "block";
   }
 });
 
@@ -311,4 +316,50 @@ document.addEventListener("click", (event) => {
   if (event.target.id === "backdrop" || event.target.id === "x-button") {
     handleModal("close");
   }
+});
+
+document.getElementById("change-theme-button").addEventListener("click", () => {
+  const backgroundImageContainer = document.querySelector(
+    ".image-opacity-layer"
+  );
+  const spinTitle = document.getElementById("spin-title");
+
+  const allThemes = [
+    {
+      backgroundImage:
+        "https://hips.hearstapps.com/hmg-prod/images/delish-profiteroles-05-1644593689.jpeg?crop=1xw:0.7874231032125769xh;center,top",
+      title: {
+        text: "You deserve a treat",
+        color: "black",
+      },
+    },
+    {
+      backgroundImage:
+        "https://snowboardmag.com/wp-content/uploads/2016/09/those-days-jussi-oksanen-dean-blotto-gray-snowboarding-for-slider-1400x900.jpg",
+      title: {
+        text: "Spin for a chance to win on the slopes",
+        color: "white",
+      },
+    },
+
+    {
+      backgroundImage: "https://w.wallhaven.cc/full/rd/wallhaven-rdxvk7.jpg",
+      title: {
+        text: "Begin your journey with a spin",
+        color: "black",
+        textShadow: "#916767 1px 0 10px",
+      },
+    },
+  ];
+
+  currentThemeIndex++;
+  if (currentThemeIndex >= allThemes.length) {
+    currentThemeIndex = 0;
+  }
+
+  const newBg = allThemes[currentThemeIndex].backgroundImage;
+  backgroundImageContainer.style.backgroundImage = `url(${newBg})`;
+  spinTitle.textContent = allThemes[currentThemeIndex].title.text;
+  spinTitle.style.color = allThemes[currentThemeIndex].title.color;
+  spinTitle.style.textShadow = allThemes[currentThemeIndex].title.textShadow;
 });

@@ -27,6 +27,9 @@
     <div id="stats-container">
       <button id="stats-button" class="btn">Show Stats</button>
       <button id="open-modal-button" class="btn">Open Modal</button>
+      <button id="change-theme-button" class="btn" style="display: none">
+        Change Theme
+      </button>
       <h4 id="conversions" style="display: none">Conversions:</h4>
       <h4 id="views" style="display: none">Views:</h4>
     </div>
@@ -37,7 +40,12 @@
       </div>
 
       <div class="background-container">
-        <div class="image-opacity-layer"></div>
+        <div
+          class="image-opacity-layer"
+          style="
+            background-image: url('https://hips.hearstapps.com/hmg-prod/images/delish-profiteroles-05-1644593689.jpeg?crop=1xw:0.7874231032125769xh;center,top');
+          "
+        ></div>
         <div class="content-container">
           <div id="mainbox" class="mainbox">
             <div id="spin-wheel-container">
@@ -58,8 +66,8 @@
             </h1>
             <div id="confetti-wrapper"></div>
             <form id="spin-to-win-form">
-              <h2>Spin To Win!</h2>
-              <p>
+              <h2 id="spin-title">You deserve a treat</h2>
+              <p style="color: white">
                 Enter your info for the chance to win one of our big discounts!
               </p>
               <input
