@@ -143,7 +143,7 @@ function landOnSelectedCode(targetCouponCode) {
     360 -
     targetDiscount.index * degreesPerDiscount +
     arrow.getBoundingClientRect().width;
-  const totalDegrees = 2800 + targetAngle; // 8 spins + target angle
+  const totalDegrees = 1800 + targetAngle; // 5 spins + target angle
 
   const rotationInterval = window.setInterval(() => {
     const currentRotation = spinChart.options.rotation;
@@ -161,9 +161,17 @@ function landOnSelectedCode(targetCouponCode) {
       spinChart.update();
       spinBtn.disabled = false;
       renderConfetti();
+      renderCongratulations();
     }
   }, 10);
 }
+
+const renderCongratulations = () => {
+  const congratsMsg = document.getElementById("congrats-message");
+  const userForm = document.getElementById("spin-to-win-form");
+  congratsMsg.style.display = "block";
+  userForm.style.display = "none";
+};
 
 document
   .getElementById("spin-to-win-form")
@@ -270,7 +278,7 @@ function renderStats(data) {
   const conversions = document.getElementById("conversions");
   const views = document.getElementById("views");
 
-  conversions.innerHTML = `Conversions: ${data.conversations}`; //this should change from conversations to conversions
+  conversions.innerHTML = `Conversions: ${data.conversations}`; //this should change from conversations to conversions with api change
   views.innerHTML = `Views: ${data.views}`;
 
   conversions.style.display = "block";
@@ -324,7 +332,6 @@ document.getElementById("change-theme-button").addEventListener("click", () => {
     ".image-opacity-layer"
   );
   const spinTitle = document.getElementById("spin-title");
-  const allTitles = document.querySelectorAll("h2");
 
   const allThemes = [
     {
