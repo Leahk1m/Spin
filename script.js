@@ -272,7 +272,6 @@ document
           return res.json();
         })
         .then((data) => {
-          console.log("stats data", data);
           renderStats(data.data);
         })
         .catch((err) => {
