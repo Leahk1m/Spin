@@ -62,9 +62,17 @@
             </div>
           </div>
           <div id="user-form">
-            <h2 id="congrats-message" style="display: none">
-              Congratulations! Your discount code has been sent to your email.
-            </h2>
+            <div
+              id="congrats-container"
+              style="display: flex; gap: 16px; flex-direction: column"
+            >
+              <h1 id="congrats-title" style="display: none; color: white">
+                Congratulations!
+              </h1>
+              <h3 id="congrats-description" style="display: none; color: white">
+                Your discount code has been sent to your email.
+              </h3>
+            </div>
 
             <div id="confetti-wrapper"></div>
             <form id="spin-to-win-form">

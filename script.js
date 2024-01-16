@@ -1,6 +1,7 @@
 const discountsArray = [];
 let rotationDegrees;
 let currentThemeIndex = 0;
+let offerLabel;
 
 const defaultDiscounts = [
   {
@@ -167,9 +168,14 @@ function landOnSelectedCode(targetCouponCode) {
 }
 
 const renderCongratulations = () => {
-  const congratsMsg = document.getElementById("congrats-message");
+  const congratsTitle = document.getElementById("congrats-title");
+  const congratsDescription = document.getElementById("congrats-description");
   const userForm = document.getElementById("spin-to-win-form");
-  congratsMsg.style.display = "block";
+  congratsTitle.style.display = "block";
+  congratsDescription.style.display = "block";
+  congratsDescription.textContent =
+    offerLabel &&
+    `You've snagged ${offerLabel}! Your lucky spin pays off`;
   userForm.style.display = "none";
 };
 
@@ -195,7 +201,8 @@ document
       .then((response) => response.json())
       .then((data) => {
         const couponCode = data.data.offer.label;
-        console.log("coupon code", couponCode);
+        offerLabel = couponCode;
+        console.log("coupon code:", couponCode);
 
         landOnSelectedCode(couponCode);
       })
