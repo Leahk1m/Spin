@@ -333,6 +333,7 @@ document.getElementById("change-theme-button").addEventListener("click", () => {
       title: {
         text: "You deserve a treat",
         color: "black",
+        font: "Khand, sans-serif",
       },
     },
     {
@@ -341,6 +342,7 @@ document.getElementById("change-theme-button").addEventListener("click", () => {
       title: {
         text: "Spin for a chance to win on the slopes",
         color: "white",
+        font: "Bebas Neue, sans-serif",
       },
     },
 
@@ -350,7 +352,7 @@ document.getElementById("change-theme-button").addEventListener("click", () => {
         text: "Begin your journey with a spin",
         color: "black",
         textShadow: "rgb(206 147 147 / 34%) 1px 0px 10px",
-        font: "auto",
+        font: "Rubik Maps, system-ui",
       },
     },
   ];
