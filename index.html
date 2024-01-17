@@ -30,9 +30,12 @@
       <button id="change-theme-button" class="btn" style="display: none">
         Change Theme
       </button>
-      <h4 id="conversion-rate" style="display: none">Conversion Rate:</h4>
-      <h4 id="conversions" style="display: none">Conversions:</h4>
-      <h4 id="views" style="display: none">Views:</h4>
+
+      <div id="conversions-container">
+        <h4 id="conversion-rate">Conversion Rate:</h4>
+        <h4 id="conversions">Conversions:</h4>
+        <h4 id="views">Views:</h4>
+      </div>
     </div>
 
     <div id="modal">
@@ -118,7 +121,7 @@
               />
 
               <div id="validation-messages-container"></div>
-              <button type="submit" class="btn spin" disabled>
+              <button type="submit" class="btn spin">
                 <span>Try your luck</span>
               </button>
             </form>
