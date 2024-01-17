@@ -46,17 +46,17 @@ const loadExternalResources = () => {
   const confettiScript = document.createElement("script");
   confettiScript.src =
     "https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js";
-  document.body.appendChild(confettiScript);
+  head.appendChild(confettiScript);
 
   const chartScript = document.createElement("script");
   chartScript.src =
     "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js";
-  document.body.appendChild(chartScript);
+  head.appendChild(chartScript);
 
   const chartPluginScript = document.createElement("script");
   chartPluginScript.src =
     "https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js";
-  document.body.appendChild(chartPluginScript);
+  head.appendChild(chartPluginScript);
 };
 
 const createBackground = () => {
@@ -79,17 +79,17 @@ const createActionButtons = () => {
 
   const statsButton = document.createElement("button");
   statsButton.className = "btn";
-  statsButton.id = "action-button";
+  statsButton.id = "stats-button";
   statsButton.textContent = "Show Stats";
 
   const openModalButton = document.createElement("button");
   openModalButton.className = "btn";
-  openModalButton.id = "action-button";
+  openModalButton.id = "open-modal-button";
   openModalButton.textContent = "Open Modal";
 
   const changeThemeButton = document.createElement("button");
   changeThemeButton.className = "btn";
-  changeThemeButton.id = "action-button";
+  changeThemeButton.id = "change-theme-button";
   changeThemeButton.textContent = "Change Theme";
 
   actionButtons.appendChild(statsButton);
@@ -101,6 +101,12 @@ const createActionButtons = () => {
 
 function createSpinToWinComponent() {
   //MODAL
+  const backgroundContainer = document.createElement("div");
+  backgroundContainer.className = "background-container";
+  const imageOpacityLayer = document.createElement("div");
+  imageOpacityLayer.className = "image-opacity-layer";
+  backgroundContainer.appendChild(imageOpacityLayer);
+
   const modal = document.createElement("div");
   modal.id = "modal";
 
@@ -131,10 +137,12 @@ function createSpinToWinComponent() {
 
   mainBox.appendChild(wheelContainer);
   contentContainer.appendChild(mainBox);
-  modal.appendChild(contentContainer);
+  backgroundContainer.appendChild(contentContainer);
 
   xButtonContainer.appendChild(xButton);
   modal.appendChild(xButtonContainer);
+
+  modal.appendChild(backgroundContainer);
 
   document.body.appendChild(modal);
 
@@ -277,11 +285,20 @@ const initializeSpinChart = (wheel, discounts, spinColors) => {
 const addStyles = () => {
   const style = document.createElement("style");
   style.textContent = `
+        * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        outline: none;
+        font-family: "Courier New", Courier, monospace;
+      }
       body {
-        height: 100vh;
-        width: 100%;
         display: flex;
+        justify-content: flex-start;
         align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        background-size: cover;
       }
       .action-buttons {
         display: flex;
@@ -297,10 +314,11 @@ const addStyles = () => {
         box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
         z-index: 30;
         border-radius: 12px;
+        display: none;
+
         // opacity: 0;
         transition: opacity 0.2s ease;
-        border: 1px solid pink;
-        display: flex;
+        // display: flex;
         align-items: center;
         justify-content: center;
       }
@@ -337,6 +355,7 @@ const addStyles = () => {
         width: fit-content;
         position: absolute;
         left: 50%;
+        z-index: 99;
       }
       .user-form h2 {
         color: #000;
@@ -358,6 +377,15 @@ const addStyles = () => {
         width: 250px;
         box-sizing: border-box;
         width: 100%;
+      }
+      .x-button-container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        cursor: pointer;
+        position: absolute;
+        padding: 10px;
+        top: 0;
       }
       #x-button {
         display: flex;
@@ -446,17 +474,138 @@ const addStyles = () => {
         font-weight: 600;
         box-shadow: 6px 5px 5px 3px #7f7f7f6e;
       }
-
+      .background-container {
+        position: relative;
+        
+      }
+      
+      .image-opacity-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.7;
+        border-radius: 0px 10px 10px 0px;
+        background-image: url('https://hips.hearstapps.com/hmg-prod/images/delish-profiteroles-05-1644593689.jpeg?crop=1xw:0.7874231032125769xh;center,top');
+      }
   `;
   document.head.appendChild(style);
 };
 
 //EVENT LISTENERS
 
+const handleModal = (action) => {
+  const modal = document.getElementById("modal");
+  const backdrop = document.getElementById("backdrop");
+  const openModalButton = document.getElementById("open-modal-button");
+
+  switch (action) {
+    case "open":
+      modal.style.display = "flex";
+      openModalButton.textContent = "Hide Modal";
+      break;
+    case "close":
+      modal.style.display = "none";
+      backdrop.classList.remove("show");
+      openModalButton.textContent = "Show Modal";
+      break;
+    default:
+      break;
+  }
+};
+
 const setupEventListeners = () => {
   const xButton = document.getElementById("x-button");
-  xButton.addEventListener("click", () => {});
+  const openModalButton = document.getElementById("open-modal-button");
+  console.log("open modal button", openModalButton);
+
+  const spinButton = document.querySelector(".btn.spin");
+
+  const modal = document.getElementById("modal");
+
+  const statsButton = document.getElementById("stats-button");
+
+  xButton.addEventListener("click", () => {
+    handleModal("close");
+  });
+
+  openModalButton.addEventListener("click", () => {
+    if (modal.style.display === "flex") {
+      handleModal("close");
+    } else {
+      handleModal("open");
+    }
+  });
+
+  statsButton.addEventListener("click", async () => {
+    const response = await fetch(
+      "https://callbacks.dev.sakari.io/spintowin/13/stats"
+    );
+    const stats = await response.json();
+    console.log("stats:", stats);
+  });
+
+  spinButton.addEventListener("click", (e) => {
+    spinBtn.disabled = true;
+    const targetDiscount = discountsArray.find(
+      (discount) => discount.code === targetCouponCode
+    );
+    if (!targetDiscount) {
+      return;
+    }
+
+    const totalDiscounts = 12;
+    const degreesPerDiscount = 360 / totalDiscounts;
+    const targetAngle =
+      360 -
+      targetDiscount.index * degreesPerDiscount +
+      arrow.getBoundingClientRect().width;
+    const totalDegrees = 1800 + targetAngle; // 5 spins + target angle
+
+    const rotationInterval = window.setInterval(() => {
+      const currentRotation = spinChart.options.rotation;
+      const newRotation = currentRotation + 10;
+
+      const wheel = document.getElementById("spin-wheel");
+      wheel.style.transition = "transform 5s ease-out";
+
+      spinChart.options.rotation = newRotation;
+      spinChart.update();
+
+      if (newRotation >= totalDegrees) {
+        clearInterval(rotationInterval);
+        spinChart.options.rotation = targetAngle;
+        spinChart.update();
+        spinBtn.disabled = false;
+        renderConfetti();
+        renderCongratulations();
+      }
+    }, 10);
+  });
 };
+
+function renderConfetti() {
+  const containerBounds = document
+    .getElementById("confetti-wrapper")
+    .getBoundingClientRect();
+
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: {
+      x:
+        (containerBounds.left + containerBounds.right) /
+        (2 * window.innerWidth),
+      y:
+        (containerBounds.top + containerBounds.bottom) /
+        (2 * window.innerHeight),
+    },
+  });
+}
 
 const initializeComponent = () => {
   loadExternalResources();
@@ -466,5 +615,4 @@ const initializeComponent = () => {
   setupEventListeners();
 };
 
-//initialize the component
 initializeComponent();

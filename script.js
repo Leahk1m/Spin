@@ -174,8 +174,7 @@ const renderCongratulations = () => {
   congratsTitle.style.display = "block";
   congratsDescription.style.display = "block";
   congratsDescription.textContent =
-    offerLabel &&
-    `You've snagged ${offerLabel}! Your lucky spin pays off`;
+    offerLabel && `You've snagged ${offerLabel}! Your lucky spin pays off`;
   userForm.style.display = "none";
 };
 
@@ -258,13 +257,16 @@ document
   .addEventListener("click", function (event) {
     const conversions = document.getElementById("conversions");
     const views = document.getElementById("views");
+    const conversionRate = document.getElementById("conversion-rate");
 
     if (
       conversions.style.display !== "none" &&
-      views.style.display !== "none"
+      views.style.display !== "none" &&
+      conversionRate.style.display !== "none"
     ) {
       conversions.style.display = "none";
       views.style.display = "none";
+      conversionRate.style.display = "none";
       this.textContent = "Show Stats";
     } else {
       fetch("https://callbacks.dev.sakari.io/spintowin/13/stats")
@@ -283,12 +285,22 @@ document
 function renderStats(data) {
   const conversions = document.getElementById("conversions");
   const views = document.getElementById("views");
+  const conversionRate = document.getElementById("conversion-rate");
 
   conversions.innerHTML = `Conversions: ${data.conversations}`; //this should change from conversations to conversions with api change
   views.innerHTML = `Views: ${data.views}`;
+  let conversionRateValue = 0;
+  if (data.views !== 0) {
+    conversionRateValue = (data.conversations / data.views) * 100;
+  }
+
+  conversionRate.innerHTML = `Conversion Rate: ${conversionRateValue.toFixed(
+    2
+  )}%`;
 
   conversions.style.display = "block";
   views.style.display = "block";
+  conversionRate.style.display = "block";
   document.getElementById("stats-button").textContent = "Hide Stats";
 }
 
