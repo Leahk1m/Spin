@@ -66,6 +66,41 @@ function createSpinToWin(options) {
       console.log("spin wheel");
       spinWheel();
     });
+
+    const form = document.getElementById("spin-to-win-form");
+    form.addEventListener("submit", handleFormSubmit);
+  }
+
+  async function handleFormSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    await fetchPrize(data);
+  }
+
+  async function fetchPrize(data) {
+    try {
+      const response = await fetch(
+        "https://callbacks.dev.sakari.io/spintowin/13/contacts",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+      console.log("Prize:", result);
+      setState({ currentPrize: result.data.offer.label });
+
+      // Handle the API response
+    } catch (error) {
+      console.error("Error in fetchPrize:", error);
+    }
   }
 
   async function fetchDiscounts() {
@@ -101,33 +136,6 @@ function createSpinToWin(options) {
     } catch (error) {
       console.error("error:", error);
     }
-  }
-
-  async function fetchPrize() {
-    // Fetch prize from api
-
-    const response = await fetch(
-      "https://callbacks.dev.sakari.io/spintowin/13/contacts",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName: "John",
-          lastName: "Doe",
-          email: "hello@k.com",
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("data", data);
-          })
-          .catch((err) => {
-            console.log("err", err);
-          }),
-      }
-    );
-    console.log("response", response);
   }
 
   function setupWheel() {
@@ -179,17 +187,43 @@ function createSpinToWin(options) {
     });
   }
 
-  function spinWheel() {
-    setState({ isSpinning: true });
-    fetchPrize();
+  async function spinWheel() {
+    const arrow = document.getElementById("wheel-arrow");
 
-    if (state.spinChart) {
-      state.spinChart.data.datasets[0].data = Array.from(
-        { length: 12 },
-        (_, index) => 1
-      );
+    setState({ isSpinning: true });
+    await fetchPrize();
+
+    console.log("current prize", state.currentPrize);
+
+    const currentPrizeIndex = state.discountsArray.findIndex((discount) => {
+      return discount.code === state.currentPrize;
+    });
+
+    const degreesPerDiscount = 360 / state.maxNumOfPrizes;
+    const targetAngle =
+      360 -
+      currentPrizeIndex * degreesPerDiscount +
+      arrow.getBoundingClientRect().width;
+    const totalDegrees = 1800 + targetAngle; // 5 spins + target angle
+
+    const rotationInterval = window.setInterval(() => {
+      const currentRotation = state.spinChart.options.rotation;
+      const newRotation = currentRotation + 10;
+
+      state.spinChart.options.rotation = newRotation;
       state.spinChart.update();
-    }
+
+      if (newRotation >= totalDegrees) {
+        setState({ isSpinning: false });
+        clearInterval(rotationInterval);
+
+        state.spinChart.options.rotation = targetAngle;
+        state.spinChart.update();
+
+        // renderConfetti();
+        // renderCongratulations();
+      }
+    });
   }
 
   function setState(newState) {
