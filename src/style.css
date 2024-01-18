@@ -54,7 +54,7 @@ body {
 .fa-location-dot {
   position: absolute;
   top: 22%;
-  left: 40%;
+  left: 41%;
   transform: rotate(54deg);
   z-index: 99;
   font-size: 2.2rem;
@@ -105,13 +105,12 @@ body {
   padding: 10px;
   text-transform: uppercase;
 }
-.btn.hidden {
+/* .btn.hidden {
   display: none;
-}
+} */
 
 .btn.spin {
   width: 100%;
-  padding: 0;
 }
 
 .btn span {
@@ -148,6 +147,16 @@ body {
   transition: opacity 0.2s ease;
 }
 
+.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.hidden {
+  opacity: 0;
+  display: none;
+  pointer-events: none;
+}
+
 #backdrop.show {
   opacity: 1;
   pointer-events: auto;
@@ -159,16 +168,6 @@ body {
   z-index: 30;
   border-radius: 12px;
   transition: opacity 0.2s ease;
-}
-
-#modal.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#modal.show {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 #x-button {
@@ -255,10 +254,14 @@ body {
   width: 100%;
 }
 
-#conversions-container.hidden {
+#congrats-title {
   display: none;
+  color: white;
+  font-family: Khand, sans-serif;
 }
 
-#conversions-container.show {
-  display: block;
+#congrats-description {
+  display: none;
+  color: white;
+  font-family: monospace;
 }

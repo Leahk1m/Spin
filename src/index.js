@@ -13,8 +13,15 @@ function createSpinToWin(options) {
     conversionRate: 0,
     conversions: 0,
     views: 0,
-    showTheme: false,
     currentThemeIndex: 0,
+    formTitle: options.formTitle || "Spin to win!",
+    formDescription:
+      options.formDescription ||
+      "Enter your info for the chance to win one of our big discounts!",
+    congratulatoryTitle: options.congratulatoryTitle || "Congratulations!",
+    congratulatoryDescription:
+      options.congratulatoryDescription || "You've won a discount!",
+    // Default Themes
     allThemes: [
       {
         backgroundImage:
@@ -24,14 +31,10 @@ function createSpinToWin(options) {
           color: "black",
           font: "Khand, sans-serif",
         },
-      },
-      {
-        backgroundImage:
-          "https://snowboardmag.com/wp-content/uploads/2016/09/those-days-jussi-oksanen-dean-blotto-gray-snowboarding-for-slider-1400x900.jpg",
-        title: {
-          text: "Spin for a chance to win on the slopes",
+        content: {
+          text: "Enter your info for the chance to win one of our big discounts!",
           color: "white",
-          font: "Bebas Neue, sans-serif",
+          font: "Khand, sans-serif",
         },
       },
 
@@ -42,6 +45,26 @@ function createSpinToWin(options) {
           color: "black",
           textShadow: "rgb(206 147 147 / 34%) 1px 0px 10px",
           font: "Rubik Maps, system-ui",
+        },
+        content: {
+          text: "Enter your info for the chance to win one of our big discounts!",
+          color: "white",
+          font: "Khand, sans-serif",
+        },
+      },
+
+      {
+        backgroundImage:
+          "https://snowboardmag.com/wp-content/uploads/2016/09/those-days-jussi-oksanen-dean-blotto-gray-snowboarding-for-slider-1400x900.jpg",
+        title: {
+          text: "Spin for a chance to win on the slopes",
+          color: "white",
+          font: "Bebas Neue, sans-serif",
+        },
+        content: {
+          text: "Enter your info for the chance to win one of our big discounts!",
+          color: "white",
+          font: "Khand, sans-serif",
         },
       },
     ],
@@ -72,8 +95,6 @@ function createSpinToWin(options) {
       "iPhone 15",
     ],
   };
-
-  const finalOptions = { ...defaultOptions, ...options };
 
   function setupEventListeners() {
     const openModalButton = document.getElementById("open-modal-button");
@@ -199,6 +220,7 @@ function createSpinToWin(options) {
   }
 
   function setupWheel() {
+    //Wheel set up with Chart.js
     //https://chartjs-plugin-datalabels.netlify.app/guide/getting-started.html
     state.spinChart = new Chart("spin-wheel", {
       type: "pie",
@@ -276,12 +298,9 @@ function createSpinToWin(options) {
       if (newRotation >= totalDegrees) {
         setState({ isSpinning: false });
         clearInterval(rotationInterval);
-
         state.spinChart.options.rotation = targetAngle;
         state.spinChart.update();
-
         renderConfetti();
-        // renderCongratulations();
       }
     });
   }
@@ -311,63 +330,140 @@ function createSpinToWin(options) {
   }
 
   function render() {
-    const wheelElement = document.getElementById("spin-wheel");
-    wheelElement.className = state.isSpinning ? "spinning" : "";
+    updateElementVisibility(
+      "congratulatory-title",
+      !state.isSpinning && !!state.currentPrize
+    );
+    updateElementVisibility(
+      "congratulatory-description",
+      !state.isSpinning && !!state.currentPrize
+    );
+    updateElementVisibility(
+      "spin-to-win-form",
+      state.isSpinning || !state.currentPrize
+    );
+    updateElementVisibility("modal", state.showModal);
+    updateElementVisibility("backdrop", state.showModal, "show");
+    updateElementVisibility("conversions-container", state.showStats);
 
-    const openModalButton = document.getElementById("open-modal-button");
-    const showStatsButton = document.getElementById("stats-button");
-
-    const modal = document.getElementById("modal");
-    const backdrop = document.getElementById("backdrop");
-
-    if (state.showModal) {
-      modal.classList.remove("hidden");
-      backdrop.classList.add("show");
-      openModalButton.innerText = "Hide Modal";
-    } else {
-      modal.classList.add("hidden");
-      backdrop.classList.remove("show");
-      openModalButton.innerText = "Show Modal";
-    }
-
-    const themeButton = document.querySelector(".btn.theme");
-    state.showModal
-      ? themeButton.classList.remove("hidden")
-      : themeButton.classList.add("hidden");
-
-    const conversionsContainer = document.getElementById(
-      "conversions-container"
+    //Button states
+    updateButtonState(
+      "open-modal-button",
+      state.showModal,
+      "Hide Modal",
+      "Show Modal"
+    );
+    updateButtonState(
+      "stats-button",
+      state.showStats,
+      "Hide Stats",
+      "Show Stats"
+    );
+    updateButtonState(
+      ".btn.spin",
+      state.isSpinning,
+      "Try your luck",
+      "Try your luck",
+      true
+    );
+    updateButtonState(
+      "change-theme-button",
+      state.showModal,
+      "Change Theme",
+      null,
+      false,
+      true
     );
 
-    if (state.showStats) {
-      conversionsContainer.classList.remove("hidden");
-      showStatsButton.innerText = "Hide Stats";
-    } else {
-      conversionsContainer.classList.add("hidden");
-      showStatsButton.innerText = "Show Stats";
+    // Text content states
+    updateTextContent("form-title", state.formTitle);
+    updateTextContent("form-description", state.formDescription);
+    updateTextContent("congratulatory-title", state.congratulatoryTitle);
+    updateTextContent(
+      "congratulatory-description",
+      state.congratulatoryDescription
+    );
+
+    //Conversion stats
+    updateTextContent(
+      "conversion-rate",
+      `Conversion Rate: ${state.conversionRate}%`
+    );
+    updateTextContent("conversions", `Conversions: ${state.conversions}`);
+    updateTextContent("views", `Views: ${state.views}`);
+
+    // Theme change
+    const currentTheme = state.allThemes[state.currentThemeIndex];
+    applyTheme(currentTheme);
+  }
+
+  function updateElementVisibility(
+    elementId,
+    condition,
+    additionalElement = ""
+  ) {
+    const element =
+      document.getElementById(elementId) || document.querySelector(elementId);
+    if (element) {
+      element.classList.toggle("hidden", !condition);
+
+      if (additionalElement) {
+        element.classList.toggle(additionalElement, condition);
+      }
     }
+  }
 
-    //Update conversion rate, conversions, and views
-    document.getElementById(
-      "conversion-rate"
-    ).textContent = `Conversion Rate: ${state.conversionRate}%`;
-    document.getElementById(
-      "conversions"
-    ).textContent = `Conversions: ${state.conversions}`;
-    document.getElementById("views").textContent = `Views: ${state.views}`;
+  function updateButtonState(
+    buttonId,
+    condition,
+    textTrue,
+    textFalse,
+    disable = false,
+    hidden = false
+  ) {
+    const button =
+      document.getElementById(buttonId) || document.querySelector(buttonId);
+    if (button) {
+      button.innerText = condition ? textTrue : textFalse;
+      if (disable) {
+        button.disabled = condition;
+      }
+      if (hidden) {
+        button.classList.toggle("hidden", !condition);
+      }
+    }
+  }
 
-    // Theme change logic
+  function updateTextContent(elementId, text) {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.textContent = text;
+    }
+  }
+
+  function applyTheme(theme) {
     const backgroundImageContainer = document.querySelector(
       ".image-opacity-layer"
     );
-    const spinTitle = document.getElementById("spin-title");
-    const currentTheme = state.allThemes[state.currentThemeIndex];
+    const formTitle = document.getElementById("form-title");
+    const formDescription = document.getElementById("form-description");
 
-    backgroundImageContainer.style.backgroundImage = `url(${currentTheme.backgroundImage})`;
-    spinTitle.textContent = currentTheme.title.text;
-    spinTitle.style.color = currentTheme.title.color;
-    spinTitle.style.textShadow = currentTheme.title.textShadow;
-    spinTitle.style.fontFamily = currentTheme.title.font || "monospace";
+    if (backgroundImageContainer) {
+      backgroundImageContainer.style.backgroundImage = `url(${theme.backgroundImage})`;
+    }
+
+    if (formTitle) {
+      formTitle.textContent = theme.title.text;
+      formTitle.style.color = theme.title.color;
+      formTitle.style.textShadow = theme.title.textShadow;
+      formTitle.style.fontFamily = theme.title.font || "monospace";
+    }
+
+    if (formDescription) {
+      formDescription.textContent = theme.content.text;
+      formDescription.style.color = theme.content.color;
+      formDescription.style.fontFamily = theme.content.font || "monospace";
+    }
   }
 
   async function initialize() {
@@ -383,6 +479,11 @@ function createSpinToWin(options) {
   };
 }
 
-// Usage
-const spinToWin = createSpinToWin(/* options */);
+const spinToWin = createSpinToWin({
+  formTitle: "Special Offer Just for You",
+  formDescription: "Fill out the form to see what you win!",
+  congratulatoryTitle: "Congratulations!",
+  congratulatoryDescription: "{{{ prize }}} is what you've won!",
+  //other options for colors and prizes can be passed in here
+});
 spinToWin.initialize();
