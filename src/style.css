@@ -105,6 +105,9 @@ body {
   padding: 10px;
   text-transform: uppercase;
 }
+.btn.hidden {
+  display: none;
+}
 
 .btn.spin {
   width: 100%;

@@ -10,6 +10,10 @@ function createSpinToWin(options) {
     rotationDegrees: 0,
     showModal: false,
     showStats: false,
+    conversionRate: 0,
+    conversions: 0,
+    views: 0,
+    showTheme: false,
   };
 
   const defaultOptions = {
@@ -40,30 +44,27 @@ function createSpinToWin(options) {
 
   const finalOptions = { ...defaultOptions, ...options };
 
-  async function initialize() {
-    setupEventListeners();
-    await fetchDiscounts();
-    setupWheel();
-  }
-
   function setupEventListeners() {
     const openModalButton = document.getElementById("open-modal-button");
     const showStatsButton = document.getElementById("stats-button");
     const modal = document.getElementById("modal");
     const spinWheelButton = document.querySelector(".btn.spin");
+    const themeButton = document.querySelector(".btn.theme");
 
     openModalButton.addEventListener("click", () => {
-      console.log("open modal");
       setState({ showModal: !state.showModal });
     });
 
-    showStatsButton.addEventListener("click", () => {
-      console.log("show stats");
+    themeButton.addEventListener("click", () => {
+      console.log("theme button clicked");
+    });
+
+    showStatsButton.addEventListener("click", async () => {
+      await fetchStats();
       setState({ showStats: !state.showStats });
     });
 
     spinWheelButton.addEventListener("click", () => {
-      console.log("spin wheel");
       spinWheel();
     });
 
@@ -94,10 +95,7 @@ function createSpinToWin(options) {
       );
 
       const result = await response.json();
-      console.log("Prize:", result);
       setState({ currentPrize: result.data.offer.label });
-
-      // Handle the API response
     } catch (error) {
       console.error("Error in fetchPrize:", error);
     }
@@ -133,6 +131,27 @@ function createSpinToWin(options) {
           });
         }
       }
+    } catch (error) {
+      console.error("error:", error);
+    }
+  }
+
+  async function fetchStats() {
+    // Fetch stats from api
+    try {
+      const response = await fetch(
+        "https://callbacks.dev.sakari.io/spintowin/13/stats"
+      );
+      const stats = await response.json();
+
+      setState({
+        conversionRate: (
+          (stats.data.conversations / stats.data.views) *
+          100
+        ).toFixed(2),
+        conversions: stats.data.conversations, //this should be changed to conversions with api change,
+        views: stats.data.views,
+      });
     } catch (error) {
       console.error("error:", error);
     }
@@ -193,7 +212,7 @@ function createSpinToWin(options) {
     setState({ isSpinning: true });
     await fetchPrize();
 
-    console.log("current prize", state.currentPrize);
+    console.log("You've won:", state.currentPrize);
 
     const currentPrizeIndex = state.discountsArray.findIndex((discount) => {
       return discount.code === state.currentPrize;
@@ -204,7 +223,7 @@ function createSpinToWin(options) {
       360 -
       currentPrizeIndex * degreesPerDiscount +
       arrow.getBoundingClientRect().width;
-    const totalDegrees = 1800 + targetAngle; // 5 spins + target angle
+    const totalDegrees = 2800 + targetAngle; // 8 spins + target angle
 
     const rotationInterval = window.setInterval(() => {
       const currentRotation = state.spinChart.options.rotation;
@@ -220,9 +239,28 @@ function createSpinToWin(options) {
         state.spinChart.options.rotation = targetAngle;
         state.spinChart.update();
 
-        // renderConfetti();
+        renderConfetti();
         // renderCongratulations();
       }
+    });
+  }
+
+  function renderConfetti() {
+    const containerBounds = document
+      .getElementById("confetti-wrapper")
+      .getBoundingClientRect();
+
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: {
+        x:
+          (containerBounds.left + containerBounds.right) /
+          (2 * window.innerWidth),
+        y:
+          (containerBounds.top + containerBounds.bottom) /
+          (2 * window.innerHeight),
+      },
     });
   }
 
@@ -236,20 +274,38 @@ function createSpinToWin(options) {
     wheelElement.className = state.isSpinning ? "spinning" : "";
 
     const modal = document.getElementById("modal");
-    if (state.showModal) {
-      modal.classList.remove("hidden");
-    } else {
-      modal.classList.add("hidden");
-    }
+    state.showModal
+      ? modal.classList.remove("hidden")
+      : modal.classList.add("hidden");
+
+    const themeButton = document.querySelector(".btn.theme");
+    state.showModal
+      ? themeButton.classList.remove("hidden")
+      : themeButton.classList.add("hidden");
 
     const conversionsContainer = document.getElementById(
       "conversions-container"
     );
-    if (state.showStats) {
-      conversionsContainer.classList.remove("hidden");
-    } else {
-      conversionsContainer.classList.add("hidden");
-    }
+
+    state.showStats
+      ? conversionsContainer.classList.remove("hidden")
+      : conversionsContainer.classList.add("hidden");
+
+    //Update conversion rate, conversions, and views
+    document.getElementById(
+      "conversion-rate"
+    ).textContent = `Conversion Rate: ${state.conversionRate}%`;
+    document.getElementById(
+      "conversions"
+    ).textContent = `Conversions: ${state.conversions}`;
+    document.getElementById("views").textContent = `Views: ${state.views}`;
+  }
+
+  async function initialize() {
+    setupEventListeners();
+    await fetchDiscounts();
+    setupWheel();
+    render();
   }
 
   return {
