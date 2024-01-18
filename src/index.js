@@ -14,6 +14,37 @@ function createSpinToWin(options) {
     conversions: 0,
     views: 0,
     showTheme: false,
+    currentThemeIndex: 0,
+    allThemes: [
+      {
+        backgroundImage:
+          "https://hips.hearstapps.com/hmg-prod/images/delish-profiteroles-05-1644593689.jpeg?crop=1xw:0.7874231032125769xh;center,top",
+        title: {
+          text: "You deserve a treat",
+          color: "black",
+          font: "Khand, sans-serif",
+        },
+      },
+      {
+        backgroundImage:
+          "https://snowboardmag.com/wp-content/uploads/2016/09/those-days-jussi-oksanen-dean-blotto-gray-snowboarding-for-slider-1400x900.jpg",
+        title: {
+          text: "Spin for a chance to win on the slopes",
+          color: "white",
+          font: "Bebas Neue, sans-serif",
+        },
+      },
+
+      {
+        backgroundImage: "https://w.wallhaven.cc/full/rd/wallhaven-rdxvk7.jpg",
+        title: {
+          text: "Begin your journey with a spin",
+          color: "black",
+          textShadow: "rgb(206 147 147 / 34%) 1px 0px 10px",
+          font: "Rubik Maps, system-ui",
+        },
+      },
+    ],
   };
 
   const defaultOptions = {
@@ -49,14 +80,10 @@ function createSpinToWin(options) {
     const showStatsButton = document.getElementById("stats-button");
     const modal = document.getElementById("modal");
     const spinWheelButton = document.querySelector(".btn.spin");
-    const themeButton = document.querySelector(".btn.theme");
+    const xButton = document.getElementById("x-button");
 
     openModalButton.addEventListener("click", () => {
       setState({ showModal: !state.showModal });
-    });
-
-    themeButton.addEventListener("click", () => {
-      console.log("theme button clicked");
     });
 
     showStatsButton.addEventListener("click", async () => {
@@ -68,8 +95,22 @@ function createSpinToWin(options) {
       spinWheel();
     });
 
+    xButton.addEventListener("click", () => {
+      setState({ showModal: false });
+    });
+
     const form = document.getElementById("spin-to-win-form");
     form.addEventListener("submit", handleFormSubmit);
+
+    document
+      .getElementById("change-theme-button")
+      .addEventListener("click", () => {
+        let newThemeIndex = state.currentThemeIndex + 1;
+        if (newThemeIndex >= state.allThemes.length) {
+          newThemeIndex = 0;
+        }
+        setState({ currentThemeIndex: newThemeIndex });
+      });
   }
 
   async function handleFormSubmit(event) {
@@ -273,10 +314,21 @@ function createSpinToWin(options) {
     const wheelElement = document.getElementById("spin-wheel");
     wheelElement.className = state.isSpinning ? "spinning" : "";
 
+    const openModalButton = document.getElementById("open-modal-button");
+    const showStatsButton = document.getElementById("stats-button");
+
     const modal = document.getElementById("modal");
-    state.showModal
-      ? modal.classList.remove("hidden")
-      : modal.classList.add("hidden");
+    const backdrop = document.getElementById("backdrop");
+
+    if (state.showModal) {
+      modal.classList.remove("hidden");
+      backdrop.classList.add("show");
+      openModalButton.innerText = "Hide Modal";
+    } else {
+      modal.classList.add("hidden");
+      backdrop.classList.remove("show");
+      openModalButton.innerText = "Show Modal";
+    }
 
     const themeButton = document.querySelector(".btn.theme");
     state.showModal
@@ -287,9 +339,13 @@ function createSpinToWin(options) {
       "conversions-container"
     );
 
-    state.showStats
-      ? conversionsContainer.classList.remove("hidden")
-      : conversionsContainer.classList.add("hidden");
+    if (state.showStats) {
+      conversionsContainer.classList.remove("hidden");
+      showStatsButton.innerText = "Hide Stats";
+    } else {
+      conversionsContainer.classList.add("hidden");
+      showStatsButton.innerText = "Show Stats";
+    }
 
     //Update conversion rate, conversions, and views
     document.getElementById(
@@ -299,6 +355,19 @@ function createSpinToWin(options) {
       "conversions"
     ).textContent = `Conversions: ${state.conversions}`;
     document.getElementById("views").textContent = `Views: ${state.views}`;
+
+    // Theme change logic
+    const backgroundImageContainer = document.querySelector(
+      ".image-opacity-layer"
+    );
+    const spinTitle = document.getElementById("spin-title");
+    const currentTheme = state.allThemes[state.currentThemeIndex];
+
+    backgroundImageContainer.style.backgroundImage = `url(${currentTheme.backgroundImage})`;
+    spinTitle.textContent = currentTheme.title.text;
+    spinTitle.style.color = currentTheme.title.color;
+    spinTitle.style.textShadow = currentTheme.title.textShadow;
+    spinTitle.style.fontFamily = currentTheme.title.font || "monospace";
   }
 
   async function initialize() {
