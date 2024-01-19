@@ -5,7 +5,7 @@ function createSpinToWin(options) {
     isSpinning: false,
     currentPrize: null,
     discountsArray: [],
-    maxNumOfPrizes: 12,
+    maxNumOfPrizes: options.maxNumOfPrizes || 12,
     spinChart: null,
     rotationDegrees: 0,
     showModal: false,
@@ -13,6 +13,7 @@ function createSpinToWin(options) {
     conversionRate: 0,
     conversions: 0,
     views: 0,
+    hasErrors: true,
     currentThemeIndex: 0,
     formTitle: options.formTitle || "Spin to win!",
     formDescription:
@@ -20,7 +21,8 @@ function createSpinToWin(options) {
       "Enter your info for the chance to win one of our big discounts!",
     congratulatoryTitle: options.congratulatoryTitle || "Congratulations!",
     congratulatoryDescription:
-      options.congratulatoryDescription || "You've won a discount!",
+      options.congratulatoryDescription ||
+      "The wheel favors you with {{{ prize }}}!",
     // Default Themes
     allThemes: [
       {
@@ -99,9 +101,9 @@ function createSpinToWin(options) {
   function setupEventListeners() {
     const openModalButton = document.getElementById("open-modal-button");
     const showStatsButton = document.getElementById("stats-button");
-    const modal = document.getElementById("modal");
     const spinWheelButton = document.querySelector(".btn.spin");
     const xButton = document.getElementById("x-button");
+    const changeThemeButton = document.getElementById("change-theme-button");
 
     openModalButton.addEventListener("click", () => {
       setState({ showModal: !state.showModal });
@@ -120,29 +122,46 @@ function createSpinToWin(options) {
       setState({ showModal: false });
     });
 
-    const form = document.getElementById("spin-to-win-form");
-    form.addEventListener("submit", handleFormSubmit);
+    changeThemeButton.addEventListener("click", () => {
+      let newThemeIndex = state.currentThemeIndex + 1;
+      if (newThemeIndex >= state.allThemes.length) {
+        newThemeIndex = 0;
+      }
+      setState({ currentThemeIndex: newThemeIndex });
+    });
 
-    document
-      .getElementById("change-theme-button")
-      .addEventListener("click", () => {
-        let newThemeIndex = state.currentThemeIndex + 1;
-        if (newThemeIndex >= state.allThemes.length) {
-          newThemeIndex = 0;
-        }
-        setState({ currentThemeIndex: newThemeIndex });
+    //Form validation
+    const inputs = document.querySelectorAll("input");
+    inputs.forEach((input) => {
+      input.addEventListener("input", () => {
+        validateForm();
       });
+    });
   }
 
-  async function handleFormSubmit(event) {
-    event.preventDefault();
+  function validateForm() {
+    const formData = new FormData(document.getElementById("spin-to-win-form"));
+    const formValues = Object.fromEntries(formData.entries());
 
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
+    console.log("formValues", formValues);
 
-    await fetchPrize(data);
+    if (
+      formValues.firstName &&
+      formValues.lastName &&
+      formValues.email &&
+      isValidEmail(formValues.email)
+    ) {
+      setState({ hasErrors: false });
+    } else {
+      setState({ hasErrors: true });
+    }
   }
 
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  //API call to retrieve selected prize
   async function fetchPrize(data) {
     try {
       const response = await fetch(
@@ -159,7 +178,7 @@ function createSpinToWin(options) {
       const result = await response.json();
       setState({ currentPrize: result.data.offer.label });
     } catch (error) {
-      console.error("Error in fetchPrize:", error);
+      console.error("error:", error);
     }
   }
 
@@ -361,7 +380,7 @@ function createSpinToWin(options) {
     );
     updateButtonState(
       ".btn.spin",
-      state.isSpinning,
+      state.isSpinning || state.hasErrors,
       "Try your luck",
       "Try your luck",
       true
@@ -437,6 +456,12 @@ function createSpinToWin(options) {
   function updateTextContent(elementId, text) {
     const element = document.getElementById(elementId);
     if (element) {
+      if (text.includes("{{{ prize }}}")) {
+        if (state.currentPrize && state.currentPrize.slice(-1) === "%") {
+          text = text.replace("{{{ prize }}}", `${state.currentPrize} off`);
+        }
+        text = text.replace("{{{ prize }}}", state.currentPrize);
+      }
       element.textContent = text;
     }
   }
@@ -447,6 +472,10 @@ function createSpinToWin(options) {
     );
     const formTitle = document.getElementById("form-title");
     const formDescription = document.getElementById("form-description");
+    const congratsTitle = document.getElementById("congratulatory-title");
+    const congratsDescription = document.getElementById(
+      "congratulatory-description"
+    );
 
     if (backgroundImageContainer) {
       backgroundImageContainer.style.backgroundImage = `url(${theme.backgroundImage})`;
@@ -463,6 +492,17 @@ function createSpinToWin(options) {
       formDescription.textContent = theme.content.text;
       formDescription.style.color = theme.content.color;
       formDescription.style.fontFamily = theme.content.font || "monospace";
+    }
+
+    if (congratsTitle) {
+      congratsTitle.style.color = theme.title.color;
+      congratsTitle.style.textShadow = theme.title.textShadow;
+      congratsTitle.style.fontFamily = theme.title.font || "monospace";
+    }
+
+    if (congratsDescription) {
+      congratsDescription.style.color = theme.content.color;
+      congratsDescription.style.fontFamily = theme.content.font || "monospace";
     }
   }
 
@@ -482,8 +522,7 @@ function createSpinToWin(options) {
 const spinToWin = createSpinToWin({
   formTitle: "Special Offer Just for You",
   formDescription: "Fill out the form to see what you win!",
-  congratulatoryTitle: "Congratulations!",
-  congratulatoryDescription: "{{{ prize }}} is what you've won!",
-  //other options for colors and prizes can be passed in here
+  // congratulatoryTitle: "Congratulations!",
+  // congratulatoryDescription: "{{{ prize }}} is what you've won!",
 });
 spinToWin.initialize();
