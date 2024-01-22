@@ -41,11 +41,12 @@ function createSpinToWin(options) {
       },
 
       {
-        backgroundImage: "https://w.wallhaven.cc/full/rd/wallhaven-rdxvk7.jpg",
+        backgroundImage:
+          "https://pwimages-a.akamaihd.net/arc/4a/9f/4a9f64034444c1c1a0be00d3b6efbbd11671473304.jpg",
         title: {
           text: "Begin your journey with a spin",
           color: "black",
-          textShadow: "rgb(206 147 147 / 34%) 1px 0px 10px",
+          textShadow: "rgb(147 179 206 / 34%) 1px 0px 10px",
           font: "Rubik Maps, system-ui",
         },
         content: {
@@ -142,8 +143,6 @@ function createSpinToWin(options) {
   function validateForm() {
     const formData = new FormData(document.getElementById("spin-to-win-form"));
     const formValues = Object.fromEntries(formData.entries());
-
-    console.log("formValues", formValues);
 
     if (
       formValues.firstName &&
